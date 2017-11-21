@@ -90,25 +90,36 @@ INSERT INTO Room VALUES (132, "1st floor stairs", "The stairs are wooden and hav
 
 INSERT INTO Player VALUES (1, 223, "Tim"); 
 
-INSERT INTO NPC VALUES (1, 1, "Rat", 113); 
+INSERT INTO NPC VALUES (1, 1, "rat", 113); 
 
-INSERT INTO Container VALUES (1, "Shelf", "A closed shelf that Tim cannot reach without help, or a stool.", 123); 
-INSERT INTO Container VALUES (2, "Crack", "One of the guard towers walls has a small crack that Tim can examine and reach with a stool.", 231); 
-INSERT INTO Container VALUES (3, "Haystack", "There is a hay stack in the corner of the horse stable", 111); 
+INSERT INTO Container VALUES (1, "shelf", "A closed shelf that Tim cannot reach without help, or a stool.", 123); 
+INSERT INTO Container VALUES (2, "crack", "One of the guard towers walls has a small crack that Tim can examine and reach with a stool.", 231); 
+INSERT INTO Container VALUES (3, "haystack", "There is a hay stack in the corner of the horse stable", 111); 
 
-INSERT INTO Item VALUES (1, null, null, 212, null, "Book", "There is a thick and old looking book on the piano of the library. It appears to be written by a man named Stephenson."); 
-INSERT INTO Item VALUES (2, null, null, 213, null, "Sword", "Between the clothes there is a small silver colored sword."); 
-INSERT INTO Item VALUES (3, null, 2, null, null, "Potion", "A magic potion that allows the user to speak to animals");
-INSERT INTO Item VALUES (4, null, null, 111, null, "Stool", "A small wooden stool."); 
-INSERT INTO Item VALUES (5, null, 3, null, null, "Needle", "A small metallic needle"); 
-INSERT INTO Item VALUES (6, null, null, 112, null, "Painting", "There is a painting with copper colored frames hanging on one of the walls in the living room. It appears to portray a man named mr. Stephenson."); 
-INSERT INTO Item VALUES (7, null, 1, null, null, "Cheese", "A piece of cheese."); 
-INSERT INTO Item VALUES (8, null, null, 123, null, "Knife", "An ordinary butter knife."); 
-INSERT INTO Item VAlues (9, 1, null, null, null, "Drink", "A magic drink that the rat gave Tim."); 
-INSERT INTO Item VALUES (10, 1, null, null, null, "Key", "This key will open the front gate of the castle's yard."); 
+INSERT INTO Item VALUES (1, null, null, 212, null, "book", "There is a thick and old looking book on the piano of the library. It appears to be written by a man named Stephenson."); 
+INSERT INTO Item VALUES (2, null, null, 213, null, "sword", "Between the clothes there is a small silver colored sword."); 
+INSERT INTO Item VALUES (3, null, 2, null, null, "potion", "A magic potion that allows the user to speak to animals");
+INSERT INTO Item VALUES (4, null, null, 111, null, "stool", "A small wooden stool."); 
+INSERT INTO Item VALUES (5, null, 3, null, null, "needle", "A small metallic needle"); 
+INSERT INTO Item VALUES (6, null, null, 112, null, "painting", "There is a painting with copper colored frames hanging on one of the walls in the living room. It appears to portray a man named mr. Stephenson."); 
+INSERT INTO Item VALUES (7, null, 1, null, null, "cheese", "A piece of cheese."); 
+INSERT INTO Item VALUES (8, null, null, 123, null, "knife", "An ordinary butter knife."); 
+INSERT INTO Item VAlues (9, 1, null, null, null, "drink", "A magic drink that the rat gave Tim."); 
+INSERT INTO Item VALUES (10, 1, null, null, null, "key", "This key will open the front gate of the castle's yard."); 
 
 
 INSERT INTO TalkingItem VALUES (1, 3); 
 INSERT INTO OpeningItem VALUES (4, 1); 
 INSERT INTO OpeningItem VALUES (4, 2); 
+
+INSERT INTO Connect VALUES ("s", null, 212, 222); 
+INSERT INTO Connect VALUES ("e", null, 222, 223); 
+INSERT INTO Connect VALUES ("n", null, 222, 212); 
+INSERT INTO Connect VALUES ("s", null, 222, 232); 
+INSERT INTO Connect VALUES ("n", null, 223, 213); 
+INSERT INTO Connect VALUES ("w", null, 223, 222); 
+INSERT INTO Connect VALUES ("s", null, 213, 223); 
+INSERT INTO Connect VALUES ("w", null, 232, 231); 
+INSERT INTO Connect VALUES ("d", null, 232, 132); 
+INSERT INTO Connect VALUES ("n", null, 232, 222); 
 
