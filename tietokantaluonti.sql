@@ -1,0 +1,75 @@
+DROP DATABASE IF EXISTS omapeli; 
+CREATE DATABASE omapeli; 
+use omapeli; 
+
+DROP TABLE IF EXISTS TalkingItem; 
+DROP TABLE IF EXISTS OpeningItem; 
+DROP TABLE IF EXISTS Item; 
+DROP TABLE IF EXISTS Container; 
+DROP TABLE IF EXISTS Connect; 
+DROP TABLE IF EXISTS NPC; 
+DROP TABLE IF EXISTS Player; 
+DROP TABLE IF EXISTS Room; 
+
+CREATE TABLE Room(
+PositionID INT(12) NOT NULL, 
+RoomN VARCHAR(20), 
+RoomDescr VARCHAR(8000),
+PRIMARY KEY (PositionID));
+
+CREATE TABLE Player(
+PlayerID INT(12),
+PositionID INT(12) NOT NULL, 
+PlayerN VARCHAR(20), 
+PRIMARY KEY (PlayerID),
+FOREIGN KEY (PositionID) REFERENCES Room(PositionID)); 
+
+CREATE TABLE NPC(
+NPCID INT(12), 
+isAlive INT(5), 
+NPCN VARCHAR(20), 
+PositionID INT(12), 
+PRIMARY KEY (NPCID),
+FOREIGN KEY (PositionID) REFERENCES Room(PositionID)); 
+
+CREATE TABLE Connect(
+Direction VARCHAR(20),
+isLocked INT(5), 
+RoomFrom INT(12), 
+RoomTo INT(12), 
+FOREIGN KEY (RoomTo) REFERENCES Room(PositionID), 
+FOREIGN KEY (RoomFrom) REFERENCES Room(PositionID)); 
+
+CREATE TABLE Container(
+ContainerID INT(12),
+ContainerN VARCHAR(20), 
+ContainerDescr VARCHAR(8000),
+ContainerPosition INT(12), 
+PRIMARY KEY (ContainerID),
+FOREIGN KEY (ContainerPosition) REFERENCES Room(PositionID));
+
+CREATE TABLE Item(
+ItemID INT(12), 
+NPCID INT(12),
+ContainerID INT(12), 
+ItemPosition INT(12),
+PlayerID INT(12), 
+ItemN VARCHAR(20), 
+ItemDescr VARCHAR(8000), 
+PRIMARY KEY (ItemID), 
+FOREIGN KEY (NPCID) REFERENCES NPC(NPCID),
+FOREIGN KEY (ContainerID) REFERENCES Container(ContainerID), 
+FOREIGN KEY (ItemPosition) REFERENCES Room(PositionID), 
+FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID)); 
+
+CREATE TABLE OpeningItem(
+ItemID INT(12), 
+ContainerID INT(12), 
+FOREIGN KEY (ItemID) REFERENCES Item(ItemID), 
+FOREIGN KEY (ContainerID) REFERENCES Container(ContainerID));
+
+CREATE TABLE TalkingItem(
+NPCID INT(12), 
+ItemID INT(12), 
+FOREIGN KEY (NPCID) REFERENCES NPC(NPCID), 
+FOREIGN KEY (ItemID) REFERENCES Item(ItemID)); 
