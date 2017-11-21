@@ -74,7 +74,7 @@ ItemID INT(12),
 FOREIGN KEY (NPCID) REFERENCES NPC(NPCID), 
 FOREIGN KEY (ItemID) REFERENCES Item(ItemID)); 
 
-INSERT INTO Room VALUES (212, "LIbrary", "The library is furnished in a very old classical style. It has a couple of leather sofas and a black grand piano.");
+INSERT INTO Room VALUES (212, "Library", "The library is furnished in a very old classical style. It has a couple of leather sofas and a black grand piano.");
 INSERT INTO Room VALUES (213, "Clothing Room", "The clothing room has a lot of shelves and clothes hanging."); 
 INSERT INTO Room VALUES (222, "Corridor", "The corridor has a dark purple carpet goes all the way across the hallway. The corridor has multiple lit candles that create a dim and warm lighting. ");
 INSERT INTO Room VALUES (223, "Tim's Bedroom", "The bedroom contains a window that the light shines through, a desk and a bed."); 
@@ -92,7 +92,17 @@ INSERT INTO Player VALUES (1, 223, "Tim");
 
 INSERT INTO NPC VALUES (1, 1, "Rat", 113); 
 
-INSERT INTO Container VALUES (1, "Top shelf in the kitchen", "A closed shelf that Tim cannot reach without help, or a stool.", 123); 
-INSERT INTO Container VALUES (2, "A crack in the guard tower", "One of the guard towers walls has a small crack that Tim can examine and reach with a stool.", 231); 
-INSERT INTO Container VALUES (3, "A hay stack in the horse stable", "There is a hay stack in the corner of the horse stable", 111); 
+INSERT INTO Container VALUES (1, "Shelf", "A closed shelf that Tim cannot reach without help, or a stool.", 123); 
+INSERT INTO Container VALUES (2, "Crack", "One of the guard towers walls has a small crack that Tim can examine and reach with a stool.", 231); 
+INSERT INTO Container VALUES (3, "Haystack", "There is a hay stack in the corner of the horse stable", 111); 
+
+INSERT INTO Items VALUES (1, null, null, 212, null, "Book", "There is a thick and old looking book on the piano of the library. It appears to be written by a man named Stephenson."); 
+INSERT INTO Items VALUES (2, null, null, 213, null, "Sword", "Between the clothes there is a small silver colored sword."); 
+INSERT INTO Items VALUES (3, null, 2, null, null, "Potion", "A magic potion that allows the user to speak to animals");
+INSERT INTO Items VALUES (4, null, null, 111, null, "Stool", "A small wooden stool."); 
+INSERT INTO Items VALUES (5, null, 3, null, null, "Needle", "A small metallic needle"); 
+INSERT INTO Items VALUES (6, null, null, 112, null, "Painting", "There is a painting with copper colored frames hanging on one of the walls in the living room. It appears to portray a man named mr. Stephenson."); 
+INSERT INTO Items VALUES (7, null, 1, null, null, "Cheese", "A piece of cheese."); 
+INSERT INTO Items VALUES (8, null, null, 123, null, "Knife", "An ordinary butter knife."); 
+INSERT INTO Items VAlues (9, 1, null, null, null, "Drink", "A magic drink that the rat gave Tim."); 
 
