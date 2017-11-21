@@ -87,3 +87,12 @@ INSERT INTO Room VALUES (121, "Front Yard", "The front yard is a large, barely m
 INSERT INTO Room VALUES (122, "Hall", "The hall has a high ceiling, big windows and a stone flooring. The hall is lit up by a big copper chandelier with candles that is hanging from the ceiling."); 
 INSERT INTO Room VALUES (123, "Kitchen", "Kitchen is a room where Tim wasn’t allowed to go alone. There was too many sharp objects that could hurt the young boy, but now it didn’t seem to have much left in it. There is only a butter knife on the table, and a closed shelf that he cannot reach."); 
 INSERT INTO Room VALUES (132, "1st floor stairs", "The stairs are wooden and have a golden colored railing."); 
+
+INSERT INTO Player VALUES (1, 223, "Tim"); 
+
+INSERT INTO NPC VALUES (1, 1, "Rat", 113); 
+
+INSERT INTO Container VALUES (1, "Top shelf in the kitchen", "A closed shelf that Tim cannot reach without help, or a stool.", 123); 
+INSERT INTO Container VALUES (2, "A crack in the guard tower", "One of the guard towers walls has a small crack that Tim can examine and reach with a stool.", 231); 
+INSERT INTO Container VALUES (3, "A hay stack in the horse stable", "There is a hay stack in the corner of the horse stable", 111); 
+
