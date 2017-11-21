@@ -1,7 +1,7 @@
 #main game loop
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
-                             passwd="dbpass", db="omapeli", buffered=True)
+                             password="dbpass", db="omapeli", buffered=True)
 
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
