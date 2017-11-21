@@ -21,8 +21,8 @@ while (playerAlive == True):
             print("That could not be done I'm afraid")
 
     if wordCount == 2:
-        word1 = command.split(' ',1)[0]
-        word2 = command.split(' ',1)[1]
+        word1 = command.split(' ',)[0]
+        word2 = command.split(' ',)[1]
 
         print(word1)
         print(word2)
@@ -31,11 +31,11 @@ while (playerAlive == True):
             print("you examined "+word2)
 
     if wordCount == 3:
-        word1 = command.split(' ',1)[0]
-        word2 = command.split(' ',1)[0]
-        word3 = command.split(' ',1)[0]
-
-    
+        word1 = command.split(' ',)[0]
+        word2 = command.split(' ',)[1]
+        word3 = command.split(' ',)[2]
+        
+        print(word3+word2+word1)    
         
 print("goodbye!")
     
