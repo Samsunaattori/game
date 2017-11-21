@@ -122,4 +122,18 @@ INSERT INTO Connect VALUES ("s", null, 213, 223);
 INSERT INTO Connect VALUES ("w", null, 232, 231); 
 INSERT INTO Connect VALUES ("d", null, 232, 132); 
 INSERT INTO Connect VALUES ("n", null, 232, 222); 
+INSERT INTO Connect VALUES ("e", null, 231,232); 
 
+INSERT INTO Connect VALUES ("u", null, 132,232); 
+INSERT INTO Connect VALUES ("n", null, 132, 122); 
+INSERT INTO Connect VALUES ("n", null, 122, 112); 
+INSERT INTO Connect VALUES ("e", null, 122, 123); 
+INSERT INTO Connect VALUES ("w", 1, 122, 121); 
+INSERT INTO Connect VALUES ("s", null, 122, 132); 
+INSERT INTO Connect VALUES ("n", null, 123, 113); 
+INSERT INTO Connect VALUES ("w", null, 123, 122); 
+INSERT INTO Connect VALUES ("s", null, 113, 123); 
+INSERT INTO Connect VALUES ("s", null, 112, 122);
+INSERT INTO Connect VALUES ("n", null, 121, 111); 
+INSERT INTO Connect VALUES ("e", 1, 121, 122); 
+INSERT INTO Connect VALUES ("s", 111, 121); 
