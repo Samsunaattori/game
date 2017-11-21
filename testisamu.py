@@ -1,7 +1,16 @@
 #main game loop
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
-                             password="dbpass", db="omapeli", buffered=True)
+                             passwd="dbpass", db="omapeli", buffered=True)
+
+cur = db.cursor()
+
+def pickUp(object):
+    cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"'")
+    result = cur.fetchall()
+    if len(result) == 1:
+        print("toimii")
+    
 
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
@@ -61,6 +70,7 @@ while (playerAlive == True):
 
         elif word1 == "pick" or word1 == "take":
             print("You picked up the "+word2)
+            pickUp(word2)
 
         elif word1 == "drop":
             print("You dropped the "+word2)
@@ -87,6 +97,7 @@ while (playerAlive == True):
 
         if word1 == "pick" and word2 == "up":
             print("You picked up a "+word3)
+            pickUp(word2)
 
         elif word1 == "talk" and word2 == "to":
             print("You talked to "+word3)
