@@ -1,6 +1,8 @@
-
-
 #main game loop
+import mysql.connector
+db = mysql.connector.connect(host="localhost", user="dbuser",
+                             password="dbpass", db="roolipeli", buffered=True)
+
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]","[up]","-To open inventory:","[inventory]/[i]",
@@ -73,7 +75,7 @@ while (playerAlive == True):
             print("You attacked "+target+" with a "+word2)
 
         elif word1 == "talk":
-            print("You talked to")
+            print("You talked to "+word2)
         
         else:
             print("That could not be done I'm afraid")
@@ -88,15 +90,12 @@ while (playerAlive == True):
 
         elif word1 == "talk" and word2 == "to":
             print("You talked to "+word3)
+
+        else:
+            print("That could not be done I'm afraid")
           
         
 print("goodbye!")
     
 
     
-
-    
-    
-
-
-
