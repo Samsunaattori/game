@@ -1,9 +1,20 @@
+DROP DATABASE IF EXISTS omapeli; 
 CREATE DATABASE omapeli; 
 use omapeli; 
+
+DROP TABLE IF EXISTS TalkingItem; 
+DROP TABLE IF EXISTS OpeningItem; 
+DROP TABLE IF EXISTS Item; 
+DROP TABLE IF EXISTS Container; 
+DROP TABLE IF EXISTS Connect; 
+DROP TABLE IF EXISTS NPC; 
+DROP TABLE IF EXISTS Player; 
+DROP TABLE IF EXISTS Room; 
+
 CREATE TABLE Room(
 PositionID INT(12) NOT NULL, 
 RoomN VARCHAR(20), 
-RoomDescr VARCHAR(MAX),
+RoomDescr VARCHAR(8000),
 PRIMARY KEY (PositionID));
 
 CREATE TABLE Player(
@@ -21,7 +32,7 @@ PositionID INT(12),
 PRIMARY KEY (NPCID),
 FOREIGN KEY (PositionID) REFERENCES TO Room(PositionID)); 
 
-CREATE TABLE Connection(
+CREATE TABLE Connect(
 Direction VARCHAR(20),
 isLocked INT(5), 
 RoomFrom INT(12), 
@@ -32,7 +43,7 @@ FOREIGN KEY (RoomFrom) REFERENCES TO Room(PositionID));
 CREATE TABLE Container(
 ContainerID INT(12),
 ContainerN VARCHAR(20), 
-ContainerDescr VARCHAR(MAX),
+ContainerDescr VARCHAR(8000),
 ContainerPosition INT(12), 
 PRIMARY KEY (ContainerID),
 FOREIGN KEY (ContainerPosition) REFERENCES TO Room(PositionID));
@@ -44,7 +55,7 @@ ContainerID INT(12),
 ItemPosition INT(12),
 PlayerID INY(12), 
 ItemN VARCHAR(20), 
-ItemDescr VARCHAR(MAX), 
+ItemDescr VARCHAR(8000), 
 PRIMARY KEY (ItemID), 
 FOREIGN KEY (NPCID) REFERENCES TO NPC(NPCID),
 FOREIGN KEY (ContainerID) REFERENCES TO Container(ContainerID), 
@@ -61,7 +72,4 @@ CREATE TABLE TalkingItem(
 NPCID INT(12), 
 ItemID INT(12), 
 FOREIGN KEY (NPCID) REFERENCES TO NPC(NPCID), 
-FOREIGN KEY (ItenID) REFERENCES TO Item(ItemID));
-
-
-
+FOREIGN KEY (ItenID) REFERENCES TO Item(ItemID)); 
