@@ -14,10 +14,24 @@ commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
             "-To talk to someone:","[talk (npc)]/[talk to (npc)]"]
 
+
 def move(command):
-    playerpos = cur.execute("SELECT positionID FROM Player;")
-    print(playerpos)
-    
+    cur.execute("SELECT positionID FROM Player;")
+    playerpos = cur.fetchall()
+    print(str(playerpos[0][0]))
+    haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
+    cur.execute(haku)
+    destination = cur.fetchall()
+    if cur.rowcount == 1:
+            liikkuu = ("UPDATE Player set PositionID = " + str(destination[0][0]))
+            cur.execute(liikkuu)
+            cur.execute("SELECT positionID FROM Player;")
+            playerpos = cur.fetchall()
+            print(str(playerpos[0][0]))
+    else:
+        print("You cannot go there, because there is nothing in that direction")
+move(input("Enter direction: "))
+
 
 while (playerAlive == True):
     command = str(input("Insert command: "))
