@@ -136,4 +136,5 @@ INSERT INTO Connect VALUES ("s", null, 113, 123);
 INSERT INTO Connect VALUES ("s", null, 112, 122);
 INSERT INTO Connect VALUES ("n", null, 121, 111); 
 INSERT INTO Connect VALUES ("e", 1, 121, 122); 
-INSERT INTO Connect VALUES ("s", 111, 121); 
+INSERT INTO Connect VALUES ("s", null, 111, 121); 
+
