@@ -96,13 +96,19 @@ INSERT INTO Container VALUES (1, "Shelf", "A closed shelf that Tim cannot reach 
 INSERT INTO Container VALUES (2, "Crack", "One of the guard towers walls has a small crack that Tim can examine and reach with a stool.", 231); 
 INSERT INTO Container VALUES (3, "Haystack", "There is a hay stack in the corner of the horse stable", 111); 
 
-INSERT INTO Items VALUES (1, null, null, 212, null, "Book", "There is a thick and old looking book on the piano of the library. It appears to be written by a man named Stephenson."); 
-INSERT INTO Items VALUES (2, null, null, 213, null, "Sword", "Between the clothes there is a small silver colored sword."); 
-INSERT INTO Items VALUES (3, null, 2, null, null, "Potion", "A magic potion that allows the user to speak to animals");
-INSERT INTO Items VALUES (4, null, null, 111, null, "Stool", "A small wooden stool."); 
-INSERT INTO Items VALUES (5, null, 3, null, null, "Needle", "A small metallic needle"); 
-INSERT INTO Items VALUES (6, null, null, 112, null, "Painting", "There is a painting with copper colored frames hanging on one of the walls in the living room. It appears to portray a man named mr. Stephenson."); 
-INSERT INTO Items VALUES (7, null, 1, null, null, "Cheese", "A piece of cheese."); 
-INSERT INTO Items VALUES (8, null, null, 123, null, "Knife", "An ordinary butter knife."); 
-INSERT INTO Items VAlues (9, 1, null, null, null, "Drink", "A magic drink that the rat gave Tim."); 
+INSERT INTO Item VALUES (1, null, null, 212, null, "Book", "There is a thick and old looking book on the piano of the library. It appears to be written by a man named Stephenson."); 
+INSERT INTO Item VALUES (2, null, null, 213, null, "Sword", "Between the clothes there is a small silver colored sword."); 
+INSERT INTO Item VALUES (3, null, 2, null, null, "Potion", "A magic potion that allows the user to speak to animals");
+INSERT INTO Item VALUES (4, null, null, 111, null, "Stool", "A small wooden stool."); 
+INSERT INTO Item VALUES (5, null, 3, null, null, "Needle", "A small metallic needle"); 
+INSERT INTO Item VALUES (6, null, null, 112, null, "Painting", "There is a painting with copper colored frames hanging on one of the walls in the living room. It appears to portray a man named mr. Stephenson."); 
+INSERT INTO Item VALUES (7, null, 1, null, null, "Cheese", "A piece of cheese."); 
+INSERT INTO Item VALUES (8, null, null, 123, null, "Knife", "An ordinary butter knife."); 
+INSERT INTO Item VAlues (9, 1, null, null, null, "Drink", "A magic drink that the rat gave Tim."); 
+INSERT INTO Item VALUES (10, 1, null, null, null, "Key", "This key will open the front gate of the castle's yard."); 
+
+
+INSERT INTO TalkingItem VALUES (1, 3); 
+INSERT INTO OpeningItem VALUES (4, 1); 
+INSERT INTO OpeningItem VALUES (4, 2); 
 
