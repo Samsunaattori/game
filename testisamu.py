@@ -5,12 +5,41 @@ db = mysql.connector.connect(host="localhost", user="dbuser",
 
 cur = db.cursor()
 
+def move(command):
+    cur.execute("SELECT positionID FROM Player;")
+    playerpos = cur.fetchall()
+    print(str(playerpos[0][0]))
+    haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
+    cur.execute(haku)
+    destination = cur.fetchall()
+    if cur.rowcount == 1:
+            liikkuu = ("UPDATE Player set PositionID = " + str(destination[0][0]))
+            cur.execute(liikkuu)
+            cur.execute("SELECT positionID FROM Player;")
+            playerpos = cur.fetchall()
+            print(str(playerpos[0][0]))
+    else:
+        print("You cannot go there, because there is nothing in that direction")
+move(input("Enter direction: "))
+
 def pickUp(object):
     cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"'")
     result = cur.fetchall()
     if len(result) == 1:
-        print("toimii")
-    
+        cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"' AND ItemN IN (\
+    SELECT ItemN FROM item INNER JOIN player ON item.ItemPosition = \
+    player.PositionID WHERE ItemPosition IN (SELECT PositionID FROM player))")
+        result = cur.fetchall()
+        if len(result) == 1:
+            print(str(object))
+            cur.execute("UPDATE item SET ItemPosition=null WHERE ItemN='"+str(object)+"'")
+            cur.execute("UPDATE item SET PlayerID=1 WHERE ItemN='"+str(object)+"'")
+            print("You picked up the "+str(object))
+        else:
+            print("There is no such item in the room")
+    else:
+        print("There is no such item in the room")
+        
 
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
@@ -21,6 +50,8 @@ commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
             "-To talk to someone:","[talk (npc)]/[talk to (npc)]"]
+
+
 while (playerAlive == True):
     command = str(input("Insert command: "))
     command = command.lower()
@@ -30,7 +61,6 @@ while (playerAlive == True):
         command = command.replace(i, " ")
     
     wordCount = len(command.split())
-    print(str(wordCount))
 
     if wordCount == 1:
         #directions you can go to:
@@ -69,7 +99,6 @@ while (playerAlive == True):
             print("You examined the "+word2)
 
         elif word1 == "pick" or word1 == "take":
-            print("You picked up the "+word2)
             pickUp(word2)
 
         elif word1 == "drop":
