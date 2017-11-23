@@ -166,6 +166,12 @@ def move(command):
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
             print(str(kuvaus[0][0]))
+            cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
+            tavarat = cur.fetchall()
+            if cur.rowcount >=1:
+                print("There are following items in this room:")
+                for row in tavarat:
+                      print(" - " + str(row[0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
 
