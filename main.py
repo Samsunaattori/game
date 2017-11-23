@@ -1,10 +1,10 @@
+#main game loop
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
 
 cur = db.cursor()
 playerAlive = True
-isLocked = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]","[up]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item, room or a container:",
@@ -125,12 +125,12 @@ def puzzle():
 
         elif ruutu == "reset":
             a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
-            
         elif ruutu == "exit" or ruutu=="stop":
             return False
             break
         else:
             print("False command")
+
 
     if (a1==a2==a3==a4==b1==b4==c1==c4==d1==d2==d3==d4==0 and b2==b3==c2==c3==1):    
         print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
@@ -149,11 +149,14 @@ def move(command):
     cur.execute(haku)
     destination = cur.fetchall()
     if cur.rowcount == 1:
-        if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and islocked == True:
+        cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
+        locked = cur.fetchall()
+        print(str(locked[0][0]))
+        if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and int(locked[0][0])== 1:
             if puzzle() == True:
-                isLocked = False
+                cur.execute("UPDATE Connect set isLocked = 0 where RoomFrom = 122 and RoomTo = 121")
             else:
-                isLocked == True
+                print("You did not solve the puzzle, the door is still locked")
         else:
             liikkuu = ("UPDATE Player set PositionID = " + str(destination[0][0]))
             cur.execute(liikkuu)
