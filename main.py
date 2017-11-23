@@ -6,7 +6,7 @@ db = mysql.connector.connect(host="localhost", user="dbuser",
 cur = db.cursor()
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
-            "[south]/[s]","[down]","[up]","-To open inventory:","[inventory]/[i]",
+            "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item, room or a container:",
             "[examine (object)]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
