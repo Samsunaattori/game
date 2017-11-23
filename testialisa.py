@@ -22,16 +22,15 @@ def move(command):
     haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
     cur.execute(haku)
     destination = cur.fetchall()
-    cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
-    locked = cur.fetchall()
-    print(locked)
     if cur.rowcount == 1:
+        cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
+        locked = cur.fetchall()
+        print(str(locked[0][0]))
         if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and int(locked[0][0])== 1:
             if puzzle() == True:
-
+                cur.execute("UPDATE Connect set isLocked = 1 where RoomFrom = 122 and RoomTo = 121")
             else:
-                
-
+                print("You did not solve the puzzle, the door is still locked")
         else:
             liikkuu = ("UPDATE Player set PositionID = " + str(destination[0][0]))
             cur.execute(liikkuu)
@@ -40,7 +39,8 @@ def move(command):
             print(str(playerpos[0][0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
-move(input("Enter direction: "))
+while playerAlive == True:
+    move(input("Enter direction: "))
 
 
 while (playerAlive == True):

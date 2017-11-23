@@ -111,6 +111,7 @@ def puzzle():
         elif ruutu == "reset":
             a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
         elif ruutu == "exit" or ruutu=="stop":
+            return False
             break
         else:
             print("False command")
@@ -123,6 +124,6 @@ def puzzle():
         print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
         print("The door opens")
-        isLocked == False
+        return True
 
 puzzle()
