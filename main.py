@@ -2,7 +2,9 @@ import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
 
+cur = db.cursor()
 playerAlive = True
+isLocked = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]","[up]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item, room or a container:",
@@ -123,19 +125,21 @@ def puzzle():
 
         elif ruutu == "reset":
             a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
-        
+            
+        elif ruutu == "exit" or ruutu=="stop":
+            return False
+            break
         else:
-            print("virheellinen komento")
+            print("False command")
 
-
-
-    print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
-    print("A "+str(a1)+" "+str(a2)+" "+str(a3)+" "+str(a4))
-    print("B "+str(b1)+" "+str(b2)+" "+str(b3)+" "+str(b4))
-    print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
-    print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
-
-    print("The door opens")
+    if (a1==a2==a3==a4==b1==b4==c1==c4==d1==d2==d3==d4==0 and b2==b3==c2==c3==1):    
+        print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
+        print("A "+str(a1)+" "+str(a2)+" "+str(a3)+" "+str(a4))
+        print("B "+str(b1)+" "+str(b2)+" "+str(b3)+" "+str(b4))
+        print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
+        print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
+        print("The door opens")
+        return True
 
 def move(command):
     cur.execute("SELECT positionID FROM Player;")
@@ -145,6 +149,12 @@ def move(command):
     cur.execute(haku)
     destination = cur.fetchall()
     if cur.rowcount == 1:
+        if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and islocked == True:
+            if puzzle() == True:
+                isLocked = False
+            else:
+                isLocked == True
+        else:
             liikkuu = ("UPDATE Player set PositionID = " + str(destination[0][0]))
             cur.execute(liikkuu)
             cur.execute("SELECT positionID FROM Player;")
@@ -152,7 +162,8 @@ def move(command):
             print(str(playerpos[0][0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
-move(input("Enter direction: "))
+while playerAlive == True:
+    move(input("Enter direction: "))
 
 #main game loop
 while (playerAlive == True):

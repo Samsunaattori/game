@@ -110,18 +110,19 @@ def puzzle():
 
         elif ruutu == "reset":
             a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
-        
+        elif ruutu == "exit" or ruutu=="stop":
+            break
         else:
-            print("virheellinen komento")
+            print("False command")
 
 
-
-    print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
-    print("A "+str(a1)+" "+str(a2)+" "+str(a3)+" "+str(a4))
-    print("B "+str(b1)+" "+str(b2)+" "+str(b3)+" "+str(b4))
-    print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
-    print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
-
-    print("The door opens")
+    if (a1==a2==a3==a4==b1==b4==c1==c4==d1==d2==d3==d4==0 and b2==b3==c2==c3==1):    
+        print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
+        print("A "+str(a1)+" "+str(a2)+" "+str(a3)+" "+str(a4))
+        print("B "+str(b1)+" "+str(b2)+" "+str(b3)+" "+str(b4))
+        print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
+        print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
+        print("The door opens")
+        isLocked == False
 
 puzzle()
