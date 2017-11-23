@@ -165,8 +165,34 @@ def move(command):
             print(str(playerpos[0][0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
-while playerAlive == True:
-    move(input("Enter direction: "))
+
+def pickUp(object):
+    cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"'")
+    result = cur.fetchall()
+    if len(result) == 1:
+        cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"' AND ItemN IN (\
+    SELECT ItemN FROM item INNER JOIN player ON item.ItemPosition = \
+    player.PositionID WHERE ItemPosition IN (SELECT PositionID FROM player))")
+        result = cur.fetchall()
+        if len(result) == 1:
+            print(str(object))
+            cur.execute("UPDATE item SET ItemPosition=null WHERE ItemN='"+str(object)+"'")
+            cur.execute("UPDATE item SET PlayerID=1 WHERE ItemN='"+str(object)+"'")
+            print("You picked up the "+str(object))
+        else:
+            print("There is no such item in the room")
+    else:
+        print("There is no such item in the room")
+
+def inventory():
+    cur.execute("SELECT ItemN FROM item WHERE PlayerID=1")
+    result = cur.fetchall()
+    if len(result) > 0:
+        print("You have the following items: ")
+        for row in result:
+            print(row[0])
+    else:
+        print("You have no items in your inventory")
 
 #main game loop
 while (playerAlive == True):
@@ -183,22 +209,21 @@ while (playerAlive == True):
     if wordCount == 1:
         #directions you can go to:
         if command == "n" or command == "north":
-            print("pohjoiseen")
+            move("n")
         elif command == "e" or command == "east":
-            print("itään")
+            move("e")
         elif command == "w" or command == "west":
-            print("länteen")
+            move("w")
         elif command == "s" or command == "south":
-            print("etelään")
-        elif command == "up":
-            print("ylös")
-        elif command == "down":
-            print("alas")
+            move("s")
+        elif command == "up" or command == "u":
+            move("u")
+        elif command == "down" or command == "d":
+            move("d")
 
         elif command == "inventory" or command == "i":
-            print("You have the following items: ")
-            #sql jol saa kaikki itemit jotka pelaajalla, sit for loopil kaikki nimet
-
+            inventory()
+            
         elif command == "help" or command == "h":
             for word in commands:
                 print(word)
@@ -217,7 +242,7 @@ while (playerAlive == True):
             print("You examined the "+word2)
 
         elif word1 == "pick" or word1 == "take":
-            print("You picked up the "+word2)
+            pickUp(word2)
 
         elif word1 == "drop":
             print("You dropped the "+word2)
@@ -243,7 +268,7 @@ while (playerAlive == True):
         word3 = command.split(' ',)[2]
 
         if word1 == "pick" and word2 == "up":
-            print("You picked up a "+word3)
+            pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
             print("You talked to "+word3)
