@@ -163,6 +163,9 @@ def move(command):
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
             print(str(playerpos[0][0]))
+            cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
+            kuvaus = cur.fetchall()
+            print(str(kuvaus[0][0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
 
