@@ -39,6 +39,17 @@ def pickUp(object):
             print("There is no such item in the room")
     else:
         print("There is no such item in the room")
+
+def inventory():
+    cur.execute("SELECT ItemN FROM item WHERE PlayerID=1")
+    result = cur.fetchall()
+    if len(result) > 0:
+        print("You have the following items: ")
+        for row in result:
+            print(row[0])
+    else:
+        print("You have no items in your inventory")
+    
         
 
 playerAlive = True
@@ -78,8 +89,7 @@ while (playerAlive == True):
             print("alas")
 
         elif command == "inventory" or command == "i":
-            print("You have the following items: ")
-            #sql jol saa kaikki itemit jotka pelaajalla, sit for loopil kaikki nimet
+            inventory()
 
         elif command == "help" or command == "h":
             for word in commands:
@@ -125,8 +135,7 @@ while (playerAlive == True):
         word3 = command.split(' ',)[2]
 
         if word1 == "pick" and word2 == "up":
-            print("You picked up a "+word3)
-            pickUp(word2)
+            pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
             print("You talked to "+word3)
