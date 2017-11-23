@@ -1,5 +1,4 @@
-
-
+#pelinpulma metodina
 def muunna(i):
     return (i+1)%2
 def puzzle():
