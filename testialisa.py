@@ -22,7 +22,17 @@ def move(command):
     haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
     cur.execute(haku)
     destination = cur.fetchall()
+    cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
+    locked = cur.fetchall()
+    print(locked)
     if cur.rowcount == 1:
+        if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and int(locked[0][0])== 1:
+            if puzzle() == True:
+
+            else:
+                
+
+        else:
             liikkuu = ("UPDATE Player set PositionID = " + str(destination[0][0]))
             cur.execute(liikkuu)
             cur.execute("SELECT positionID FROM Player;")
