@@ -6,7 +6,7 @@ db = mysql.connector.connect(host="localhost", user="dbuser",
 cur = db.cursor()
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
-            "[south]/[s]","[down]","[up]","-To open inventory:","[inventory]/[i]",
+            "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item, room or a container:",
             "[examine (object)]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
@@ -163,6 +163,15 @@ def move(command):
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
             print(str(playerpos[0][0]))
+            cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
+            kuvaus = cur.fetchall()
+            print(str(kuvaus[0][0]))
+            cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
+            tavarat = cur.fetchall()
+            if cur.rowcount >=1:
+                print("There are following items in this room:")
+                for row in tavarat:
+                      print(" - " + str(row[0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
 
@@ -193,6 +202,23 @@ def inventory():
             print(row[0])
     else:
         print("You have no items in your inventory")
+
+def examine(thing):
+    cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
+    resultItem = cur.fetchall()
+
+    cur.execute("SELECT ItemDescr FROM item INNER JOIN player ON item.ItemPosition = \
+    player.PositionID WHERE ItemN LIKE '"+thing+"'")
+    resultInRoom = cur.fetchall()
+    
+    if len(resultItem) > 0:
+        for row in resultItem:
+            print(row[0])
+    elif len(resultInRoom) > 0:
+        for row in resultInRoom:
+            print(row[0])
+
+
 
 #main game loop
 while (playerAlive == True):
@@ -239,7 +265,7 @@ while (playerAlive == True):
         word2 = command.split(' ',)[1]
 
         if word1 == "examine":
-            print("You examined the "+word2)
+            examine(word2)
 
         elif word1 == "pick" or word1 == "take":
             pickUp(word2)
