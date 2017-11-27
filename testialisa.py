@@ -173,8 +173,27 @@ def move(command):
                     print(" - " + str(row[0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
-while playerAlive == True:
-    move(input("Enter direction: "))
+def attack():
+    cur.execute("SELECT positionID FROM Player;")
+    playerpos = cur.fetchall()
+    if int(playerpos[0][0]) == 113:
+        tool=input("What do you want to use to attack?: ")
+        haku = ("Select PlayerID From Item where ItemN = ' " + tool + "'")
+        cur.execute(haku)
+        tulos = cur.fetchall()
+        if cur.rowcount >=1:
+            if tool == "sword":
+                print("You killed the rat")
+            elif tool == "needle":
+                print("You killed the rat")
+            elif tool == "knife":
+                print("The rat is stronger than you and it killed you")
+            else:
+                print("You cannot use that to attack")
+        else:
+            print("You don't have that item")
+    else:
+        print("There's nobody to attack.")
 
 
 while (playerAlive == True):
