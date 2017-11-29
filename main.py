@@ -163,17 +163,20 @@ def move(command):
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
             print(str(playerpos[0][0]))
+            cur.execute("Select RoomN from Room where positionID = " + str(playerpos[0][0]))
+            nimi= cur.fetchall()
+            print("You are now in " + str(nimi[0][0]))
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
             print(str(kuvaus[0][0]))
             cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
             tavarat = cur.fetchall()
             if cur.rowcount >=1:
-                print("There are following items in this room:")
                 for row in tavarat:
-                      print(" - " + str(row[0]))
+                    print(" - " + str(row[0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
+
 
 def pickUp(object):
     cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"'")
@@ -207,29 +210,35 @@ def attack():
     playerpos = cur.fetchall()
     cur.execute("Select isAlive From npc")
     npcstate = cur.fetchall()
-    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1:
-        tool=input("What do you want to use to attack?: ")
-        haku = ("Select PlayerID From Item where ItemN = '" + tool + "'")
-        cur.execute(haku)
-        tulos = cur.fetchall()
-        if len(tulos) > 0:
-            if tool == "sword":
-                cur.execute("Update npc set isAlive = 0")
-                print("You killed the rat")
-                return True
-            elif tool == "needle":
-                cur.execute("Update npc set isAlive = 0")
-                print("You killed the rat")
-                return True
-            elif tool == "knife":
-                print("The rat is stronger than you and it killed you")
-                return False
+    cur.execute("Select Itemposition from item where itemN = 'cheese'")
+    cheesepos = cur.fetchall()
+    if str(cheesepos[0][0]) != "None":
+        print(str(cheesepos))
+        if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and int(cheesepos[0][0])==113:
+            tool=input("What do you want to use to attack?: ")
+            haku = ("Select PlayerID From Item where ItemN = ' " + tool + "'")
+            cur.execute(haku)
+            tulos = cur.fetchall()
+            if cur.rowcount >=1:
+                if tool == "sword":
+                    cur.execute("Update npc set isAlive = 0")
+                    print("You killed the rat")
+                    return True
+                elif tool == "needle":
+                    cur.execute("Update npc set isAlive = 0")
+                    print("You killed the rat")
+                    return True
+                elif tool == "knife":
+                    print("The rat is stronger than you and it killed you")
+                    return False
+                else:
+                    print("You cannot use that to attack")
             else:
-                print("You cannot use that to attack")
+                print("You don't have that item")
         else:
-            print("You don't have that item")
+            print("There nobody to attack.")
     else:
-        print("There's nobody to attack.")
+        print("There's seems to be nobody to attack")
 
 #main game loop
 while (playerAlive == True):

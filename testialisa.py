@@ -130,7 +130,6 @@ def puzzle():
         else:
             print("False command")
 
-
     if (a1==a2==a3==a4==b1==b4==c1==c4==d1==d2==d3==d4==0 and b2==b3==c2==c3==1):    
         print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
         print("A "+str(a1)+" "+str(a2)+" "+str(a3)+" "+str(a4))
@@ -139,6 +138,34 @@ def puzzle():
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
         print("The door opens")
         return True
+
+def pickUp(object):
+    cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"'")
+    result = cur.fetchall()
+    if len(result) == 1:
+        cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"' AND ItemN IN (\
+    SELECT ItemN FROM item INNER JOIN player ON item.ItemPosition = \
+    player.PositionID WHERE ItemPosition IN (SELECT PositionID FROM player))")
+        result = cur.fetchall()
+        if len(result) == 1:
+            print(str(object))
+            cur.execute("UPDATE item SET ItemPosition=null WHERE ItemN='"+str(object)+"'")
+            cur.execute("UPDATE item SET PlayerID=1 WHERE ItemN='"+str(object)+"'")
+            print("You picked up the "+str(object))
+        else:
+            print("There is no such item in the room")
+    else:
+        print("There is no such item in the room")
+
+def inventory():
+    cur.execute("SELECT ItemN FROM item WHERE PlayerID=1")
+    result = cur.fetchall()
+    if len(result) > 0:
+        print("You have the following items: ")
+        for row in result:
+            print(row[0])
+    else:
+        print("You have no items in your inventory")
 
 def move(command):
     cur.execute("SELECT positionID FROM Player;")
@@ -162,6 +189,9 @@ def move(command):
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
             print(str(playerpos[0][0]))
+            cur.execute("Select RoomN from Room where positionID = " + str(playerpos[0][0]))
+            nimi= cur.fetchall()
+            print("You are now in " + str(nimi[0][0]))
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
             print(str(kuvaus[0][0]))
@@ -175,37 +205,44 @@ def move(command):
 def attack():
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    cur.execute("Select isAliva From npc")
+    cur.execute("Select isAlive From npc")
     npcstate = cur.fetchall()
-    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1:
-        tool=input("What do you want to use to attack?: ")
-        haku = ("Select PlayerID From Item where ItemN = ' " + tool + "'")
-        cur.execute(haku)
-        tulos = cur.fetchall()
-        if cur.rowcount >=1:
-            if tool == "sword":
-                cur.execute("Update npc set isAlive = 0")
-                print("You killed the rat")
-                return True
-            elif tool == "needle":
-                cur.execute("Update npc set isAlive = 0")
-                print("You killed the rat")
-                return True
-            elif tool == "knife":
-                print("The rat is stronger than you and it killed you")
-                return False
+    cur.execute("Select Itemposition from item where itemN = 'cheese'")
+    cheesepos = cur.fetchall()
+    if str(cheesepos[0][0]) != "None":
+        print(str(cheesepos))
+        if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and int(cheesepos[0][0])==113:
+            tool=input("What do you want to use to attack?: ")
+            haku = ("Select PlayerID From Item where ItemN = ' " + tool + "'")
+            cur.execute(haku)
+            tulos = cur.fetchall()
+            if cur.rowcount >=1:
+                if tool == "sword":
+                    cur.execute("Update npc set isAlive = 0")
+                    print("You killed the rat")
+                    return True
+                elif tool == "needle":
+                    cur.execute("Update npc set isAlive = 0")
+                    print("You killed the rat")
+                    return True
+                elif tool == "knife":
+                    print("The rat is stronger than you and it killed you")
+                    return False
+                else:
+                    print("You cannot use that to attack")
             else:
-                print("You cannot use that to attack")
+                print("You don't have that item")
         else:
-            print("You don't have that item")
+            print("There's nobody to attack.")
     else:
-        print("There's nobody to attack.")
+        print("There seems to be nobody to attack")
 
 
+#main game loop
 while (playerAlive == True):
     command = str(input("Insert command: "))
     command = command.lower()
-    for i in [".",",","!","?","'",'"',"(",")","[","]"]:
+    for i in [".",",","!","?","'",'"',"(",")","[","]",]:
         command = command.replace(i, "")
     for i in [" a "," an "," the "]:
         command = command.replace(i, " ")
@@ -216,22 +253,21 @@ while (playerAlive == True):
     if wordCount == 1:
         #directions you can go to:
         if command == "n" or command == "north":
-            print("pohjoiseen")
+            move("n")
         elif command == "e" or command == "east":
-            print("itään")
+            move("e")
         elif command == "w" or command == "west":
-            print("länteen")
+            move("w")
         elif command == "s" or command == "south":
-            print("etelään")
-        elif command == "up":
-            print("ylös")
-        elif command == "down":
-            print("alas")
+            move("s")
+        elif command == "up" or command == "u":
+            move("u")
+        elif command == "down" or command == "d":
+            move("d")
 
         elif command == "inventory" or command == "i":
-            print("You have the following items: ")
-            #sql jolla saa kaikki itemit jotka pelaajalla, sit for loopil kaikki nimet
-
+            inventory()
+            
         elif command == "help" or command == "h":
             for word in commands:
                 print(word)
@@ -250,7 +286,7 @@ while (playerAlive == True):
             print("You examined the "+word2)
 
         elif word1 == "pick" or word1 == "take":
-            print("You picked up the "+word2)
+            pickUp(word2)
 
         elif word1 == "drop":
             print("You dropped the "+word2)
@@ -259,13 +295,10 @@ while (playerAlive == True):
             print("You drank the "+word2)
         
         elif word1 == "stab" or word1 == "attack":
-            #tarkista onko hyökkäyksen kohde ok!!!
-
-            weapon = input("What would you like to attack with? ")
-            print("You attacked "+target+" with a "+word2)
+            attack()
 
         elif word1 == "talk":
-            print("You talked to")
+            print("You talked to "+word2)
         
         else:
             print("That could not be done I'm afraid")
@@ -276,13 +309,15 @@ while (playerAlive == True):
         word3 = command.split(' ',)[2]
 
         if word1 == "pick" and word2 == "up":
-            print("You picked up a "+word3)
+            pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
             print("You talked to "+word3)
-    
 
-
+        else:
+            print("That could not be done I'm afraid")
+          
+        
 print("goodbye!")
     
 
