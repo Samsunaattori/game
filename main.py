@@ -205,25 +205,29 @@ def inventory():
 def attack():
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
-    if playerpos[0][0] == 113:
+    cur.execute("Select isAlive From npc")
+    npcstate = cur.fetchall()
+    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1:
         tool=input("What do you want to use to attack?: ")
-        haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
+        haku = ("Select PlayerID From Item where ItemN = '" + tool + "'")
         cur.execute(haku)
         tulos = cur.fetchall()
-        print(str(tulos))
-        if len(tulos)>0:
-            if str(tulos[0][0]) != "None":
-                if tool == "sword":
-                    print("You killed the rat")
-                elif tool == "needle":
-                    print("You killed the rat")
-                elif tool == "knife":
-                    print("The rat is stronger than you and it killed you")
-                else:
-                    print("You cannot use that to attack")
+        if len(tulos) > 0:
+            if tool == "sword":
+                cur.execute("Update npc set isAlive = 0")
+                print("You killed the rat")
+                return True
+            elif tool == "needle":
+                cur.execute("Update npc set isAlive = 0")
+                print("You killed the rat")
+                return True
+            elif tool == "knife":
+                print("The rat is stronger than you and it killed you")
+                return False
             else:
-                print("You don't have that item")
+                print("You cannot use that to attack")
+        else:
+            print("You don't have that item")
     else:
         print("There's nobody to attack.")
 

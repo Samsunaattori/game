@@ -1,4 +1,3 @@
-#main game loop
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
@@ -176,18 +175,25 @@ def move(command):
 def attack():
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    if int(playerpos[0][0]) == 113:
+    cur.execute("Select isAliva From npc")
+    npcstate = cur.fetchall()
+    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1:
         tool=input("What do you want to use to attack?: ")
         haku = ("Select PlayerID From Item where ItemN = ' " + tool + "'")
         cur.execute(haku)
         tulos = cur.fetchall()
         if cur.rowcount >=1:
             if tool == "sword":
+                cur.execute("Update npc set isAlive = 0")
                 print("You killed the rat")
+                return True
             elif tool == "needle":
+                cur.execute("Update npc set isAlive = 0")
                 print("You killed the rat")
+                return True
             elif tool == "knife":
                 print("The rat is stronger than you and it killed you")
+                return False
             else:
                 print("You cannot use that to attack")
         else:
@@ -199,7 +205,7 @@ def attack():
 while (playerAlive == True):
     command = str(input("Insert command: "))
     command = command.lower()
-    for i in [".",",","!","?","'",'"',"(",")","[","]",]:
+    for i in [".",",","!","?","'",'"',"(",")","[","]"]:
         command = command.replace(i, "")
     for i in [" a "," an "," the "]:
         command = command.replace(i, " ")
@@ -224,7 +230,7 @@ while (playerAlive == True):
 
         elif command == "inventory" or command == "i":
             print("You have the following items: ")
-            #sql jol saa kaikki itemit jotka pelaajalla, sit for loopil kaikki nimet
+            #sql jolla saa kaikki itemit jotka pelaajalla, sit for loopil kaikki nimet
 
         elif command == "help" or command == "h":
             for word in commands:
