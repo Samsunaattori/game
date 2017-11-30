@@ -307,6 +307,17 @@ def examine(thing):
     else:
         print("That cannot be done I'm afraid")
 
+def drop(item):
+    cur.execute("SELECT PlayerID FROM item WHERE item.ItemN='"+str(item)+"'")
+    result = cur.fetchall()
+    if len(result) > 0:
+        cur.execute("UPDATE item SET PlayerID = null WHERE ItemN='"+str(item)+"'")
+        cur.execute("SELECT PositionID FROM player")
+        result = cur.fetchall()
+        position = result[0][0]
+        cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
+        print("You dropped the "+str(item)+" on the ground.")
+
 #main game loop
 while (playerAlive == True):
     command = str(input("Insert command: "))
@@ -358,7 +369,7 @@ while (playerAlive == True):
             pickUp(word2)
 
         elif word1 == "drop":
-            print("You dropped the "+word2)
+            drop(word2)
 
         elif word1 == "drink":
             print("You drank the "+word2)

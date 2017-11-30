@@ -289,12 +289,12 @@ def examine(thing):
                 cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
                 print("toimii2")
         else:
-            print("I as a coder have no idea how you got here...")
+            print("There is nothing interesting in it.")
 
     elif thing == "room":
         cur.execute("SELECT positionID FROM Player;")
         playerpos = cur.fetchall()
-        cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
+        cur.execute("select RoomDescr from Room where positionID = " + str(playerpos[0][0]))
         kuvaus = cur.fetchall()
         print(str(kuvaus[0][0]))
         cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
@@ -306,6 +306,17 @@ def examine(thing):
     
     else:
         print("That cannot be done I'm afraid")
+
+def drop(item):
+    cur.execute("SELECT PlayerID FROM item WHERE item.ItemN='"+str(item)+"'")
+    result = cur.fetchall()
+    if len(result) > 0:
+        cur.execute("UPDATE item SET PlayerID = null WHERE ItemN='"+str(item)+"'")
+        cur.execute("SELECT PositionID FROM player")
+        result = cur.fetchall()
+        position = result[0][0]
+        cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
+        print("You dropped the "+str(item)+" on the ground.")
 
 #main game loop
 while (playerAlive == True):
@@ -358,7 +369,7 @@ while (playerAlive == True):
             pickUp(word2)
 
         elif word1 == "drop":
-            print("You dropped the "+word2)
+            drop(word2)
 
         elif word1 == "drink":
             print("You drank the "+word2)
