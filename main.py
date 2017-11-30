@@ -163,20 +163,17 @@ def move(command):
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
             print(str(playerpos[0][0]))
-            cur.execute("Select RoomN from Room where positionID = " + str(playerpos[0][0]))
-            nimi= cur.fetchall()
-            print("You are now in " + str(nimi[0][0]))
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
             print(str(kuvaus[0][0]))
             cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
             tavarat = cur.fetchall()
             if cur.rowcount >=1:
+                print("There are following items in this room:")
                 for row in tavarat:
-                    print(" - " + str(row[0]))
+                      print(" - " + str(row[0]))
     else:
         print("You cannot go there, because there is nothing in that direction")
-
 
 def pickUp(object):
     cur.execute("SELECT ItemN FROM item WHERE ItemN like '"+object+"'")
@@ -208,37 +205,107 @@ def inventory():
 def attack():
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    cur.execute("Select isAlive From npc")
-    npcstate = cur.fetchall()
-    cur.execute("Select Itemposition from item where itemN = 'cheese'")
-    cheesepos = cur.fetchall()
-    if str(cheesepos[0][0]) != "None":
-        print(str(cheesepos))
-        if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and int(cheesepos[0][0])==113:
-            tool=input("What do you want to use to attack?: ")
-            haku = ("Select PlayerID From Item where ItemN = ' " + tool + "'")
-            cur.execute(haku)
-            tulos = cur.fetchall()
-            if cur.rowcount >=1:
+    print(str(playerpos[0][0]))
+    if playerpos[0][0] == 113:
+        tool=input("What do you want to use to attack?: ")
+        haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
+        cur.execute(haku)
+        tulos = cur.fetchall()
+        print(str(tulos))
+        if len(tulos)>0:
+            if str(tulos[0][0]) != "None":
                 if tool == "sword":
-                    cur.execute("Update npc set isAlive = 0")
                     print("You killed the rat")
-                    return True
                 elif tool == "needle":
-                    cur.execute("Update npc set isAlive = 0")
                     print("You killed the rat")
-                    return True
                 elif tool == "knife":
                     print("The rat is stronger than you and it killed you")
-                    return False
                 else:
                     print("You cannot use that to attack")
             else:
                 print("You don't have that item")
-        else:
-            print("There nobody to attack.")
     else:
-        print("There's seems to be nobody to attack")
+        print("There's nobody to attack.")
+
+def examine(thing):
+    cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
+    resultItem = cur.fetchall()
+
+    cur.execute("SELECT ItemDescr FROM item INNER JOIN player ON item.ItemPosition = \
+    player.PositionID WHERE ItemN LIKE '"+thing+"'")
+    resultInRoom = cur.fetchall()
+
+    cur.execute("SELECT ContainerDescr FROM container INNER JOIN player ON \
+    container.ContainerPosition = player.PositionID WHERE ContainerN LIKE '"+thing+"'")
+    resultContainer = cur.fetchall()
+    
+    if len(resultItem) > 0:
+        for row in resultItem:
+            print(row[0])
+    elif len(resultInRoom) > 0:
+        for row in resultInRoom:
+            print(row[0])
+    elif len(resultContainer) > 0:
+        for row in resultContainer:
+            print(row[0])
+        cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
+    INNER JOIN player ON container.ContainerPosition = player.PositionID WHERE container.containerID = 3)")
+        result = cur.fetchall()
+
+        cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
+    INNER JOIN player ON container.ContainerPosition = player.PositionID)")
+        result2 = cur.fetchall()
+
+        if len(result) > 0:
+            for row in result:
+                item = row[0]
+            print("A "+str(item)+" dropped from it.")
+            cur.execute("UPDATE item SET ContainerID = null WHERE ItemN='"+str(item)+"'")
+            cur.execute("SELECT PositionID FROM player")
+            result = cur.fetchall()
+            for row in result:
+                position = row[0]
+            print("toimii")
+            cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
+            print("toimii2")
+
+        elif len(result2) > 0:
+            cur.execute("SELECT ItemN from item WHERE ItemID = 4 AND PlayerID = 1")
+            result = cur.fetchall()
+
+            if len(result) == 0:
+                print("You are too short to examine it")
+
+            else:
+                for row in result2:
+                    item = row[0]
+                print("A "+str(item)+" dropped from it.")
+                cur.execute("UPDATE item SET ContainerID = null WHERE ItemN='"+str(item)+"'")
+                cur.execute("SELECT PositionID FROM player")
+                result = cur.fetchall()
+                for row in result:
+                    position = row[0]
+                print("toimii")
+                cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
+                print("toimii2")
+        else:
+            print("I as a coder have no idea how you got here...")
+
+    elif thing == "room":
+        cur.execute("SELECT positionID FROM Player;")
+        playerpos = cur.fetchall()
+        cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
+        kuvaus = cur.fetchall()
+        print(str(kuvaus[0][0]))
+        cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
+        tavarat = cur.fetchall()
+        if cur.rowcount >=1:
+            print("There are following items in this room:")
+            for row in tavarat:
+                  print(" - " + str(row[0]))
+    
+    else:
+        print("That cannot be done I'm afraid")
 
 #main game loop
 while (playerAlive == True):
@@ -285,7 +352,7 @@ while (playerAlive == True):
         word2 = command.split(' ',)[1]
 
         if word1 == "examine":
-            print("You examined the "+word2)
+            examine(word2)
 
         elif word1 == "pick" or word1 == "take":
             pickUp(word2)

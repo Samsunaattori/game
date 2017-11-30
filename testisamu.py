@@ -7,8 +7,9 @@ cur = db.cursor()
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
-            "-To exit game:","[exit]","-To examine an item, room or a container:",
-            "[examine (object)]","-To pick up/take an item:",
+            "-To exit game:","[exit]","-To examine an item or a container:",
+            "[examine (object)]","-To examine the room you are in:",
+            "[examine room]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
@@ -210,6 +211,10 @@ def examine(thing):
     cur.execute("SELECT ItemDescr FROM item INNER JOIN player ON item.ItemPosition = \
     player.PositionID WHERE ItemN LIKE '"+thing+"'")
     resultInRoom = cur.fetchall()
+
+    cur.execute("SELECT ContainerDescr FROM container INNER JOIN player ON \
+    container.ContainerPosition = player.PositionID WHERE ContainerN LIKE '"+thing+"'")
+    resultContainer = cur.fetchall()
     
     if len(resultItem) > 0:
         for row in resultItem:
@@ -217,8 +222,69 @@ def examine(thing):
     elif len(resultInRoom) > 0:
         for row in resultInRoom:
             print(row[0])
+    elif len(resultContainer) > 0:
+        for row in resultContainer:
+            print(row[0])
+        cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
+    INNER JOIN player ON container.ContainerPosition = player.PositionID WHERE container.containerID = 3)")
+        result = cur.fetchall()
 
+        cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
+    INNER JOIN player ON container.ContainerPosition = player.PositionID)")
+        result2 = cur.fetchall()
 
+        if len(result) > 0:
+            for row in result:
+                item = row[0]
+            print("A "+str(item)+" dropped from it.")
+            cur.execute("UPDATE item SET ContainerID = null WHERE ItemN='"+str(item)+"'")
+            cur.execute("SELECT PositionID FROM player")
+            result = cur.fetchall()
+            for row in result:
+                position = row[0]
+            print("toimii")
+            cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
+            print("toimii2")
+
+        elif len(result2) > 0:
+            cur.execute("SELECT ItemN from item WHERE ItemID = 4 AND PlayerID = 1")
+            result = cur.fetchall()
+
+            if len(result) == 0:
+                print("You are too short to examine it")
+
+            else:
+                for row in result2:
+                    item = row[0]
+                print("A "+str(item)+" dropped from it.")
+                cur.execute("UPDATE item SET ContainerID = null WHERE ItemN='"+str(item)+"'")
+                cur.execute("SELECT PositionID FROM player")
+                result = cur.fetchall()
+                for row in result:
+                    position = row[0]
+                print("toimii")
+                cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
+                print("toimii2")
+        else:
+            print("I as a coder have no idea how you got here...")
+
+    elif thing == "room":
+        cur.execute("SELECT positionID FROM Player;")
+        playerpos = cur.fetchall()
+        cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
+        kuvaus = cur.fetchall()
+        print(str(kuvaus[0][0]))
+        cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
+        tavarat = cur.fetchall()
+        if cur.rowcount >=1:
+            print("There are following items in this room:")
+            for row in tavarat:
+                  print(" - " + str(row[0]))
+    
+    else:
+        print("That cannot be done I'm afraid")
+
+            
 
 #main game loop
 while (playerAlive == True):
@@ -230,7 +296,6 @@ while (playerAlive == True):
         command = command.replace(i, " ")
     
     wordCount = len(command.split())
-    print(str(wordCount))
 
     if wordCount == 1:
         #directions you can go to:
