@@ -146,14 +146,12 @@ def puzzle():
 def move(command):
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
     haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
     cur.execute(haku)
     destination = cur.fetchall()
     if cur.rowcount == 1:
         cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
         locked = cur.fetchall()
-        print(str(locked[0][0]))
         if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and int(locked[0][0])== 1:
             if puzzle() == True:
                 cur.execute("UPDATE Connect set isLocked = 0 where RoomFrom = 122 and RoomTo = 121")
@@ -164,7 +162,6 @@ def move(command):
             cur.execute(liikkuu)
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
-            print(str(playerpos[0][0]))
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
             print(str(kuvaus[0][0]))
@@ -248,8 +245,6 @@ def examine(thing):
         for row in resultInRoom:
             print(row[0])
     elif len(resultContainer) > 0:
-        for row in resultContainer:
-            print(row[0])
         cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
     INNER JOIN player ON container.ContainerPosition = player.PositionID WHERE container.containerID = 3)")
         result = cur.fetchall()
@@ -259,6 +254,8 @@ def examine(thing):
         result2 = cur.fetchall()
 
         if len(result) > 0:
+            for row in resultContainer:
+                print(row[0])
             for row in result:
                 item = row[0]
             print("A "+str(item)+" dropped from it.")
@@ -267,9 +264,7 @@ def examine(thing):
             result = cur.fetchall()
             for row in result:
                 position = row[0]
-            print("toimii")
             cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
-            print("toimii2")
 
         elif len(result2) > 0:
             cur.execute("SELECT ItemN from item WHERE ItemID = 4 AND PlayerID = 1")
@@ -279,6 +274,8 @@ def examine(thing):
                 print("You are too short to examine it")
 
             else:
+                for row in resultContainer:
+                    print(row[0])
                 for row in result2:
                     item = row[0]
                 print("A "+str(item)+" dropped from it.")
@@ -327,6 +324,16 @@ def drop(item):
     else:
         print("You don't have that with you")
 
+print("It is early late morning. Tim, the 12 year old boy who you play as, has just woken up from his bed, and \
+to his surprise it seems to be almost noon already. This is unusual, because one of his servants usually \
+wakes him up at 9am. After waiting for a while, he starts to yell demanding for someone to come help him \
+up from his bed, but nobody answers. An hour later, bored to death, he finally rises from his bed on his own, \
+ready to find something to do. \n Two hours later, still nothing. Not a soul seems to realize he is here. \
+Then he finally realized, that if there is no-one to help him, there propably is no-one to stop him from \
+doing whatever he wants. 'With everyone gone, maybe I could finally get out of the castle and see what the \
+world really looks like!' And so he becan his quest of wcaping the castle.")
+examine("room")
+
 #main game loop
 while (playerAlive == True):
     command = str(input("Insert command: "))
@@ -337,7 +344,6 @@ while (playerAlive == True):
         command = command.replace(i, " ")
     
     wordCount = len(command.split())
-    print(str(wordCount))
 
     if wordCount == 1:
         #directions you can go to:
