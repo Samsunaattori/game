@@ -7,8 +7,9 @@ cur = db.cursor()
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
-            "-To exit game:","[exit]","-To examine an item, room or a container:",
-            "[examine (object)]","-To pick up/take an item:",
+            "-To exit game:","[exit]","-To examine an item or a container:",
+            "[examine (object)]","-To examine the room you are in:",
+            "[examine room]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
@@ -25,104 +26,105 @@ def puzzle():
         print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
 
-        ruutu = input("Anna ruutu: ")
+        ruutu = input("Give command: ")
 
-        if ruutu == "A1" or ruutu == "a1":
+        if ruutu == "A1" or ruutu == "a1" or ruutu == "1A" or ruutu == "1a":
             a1 = muunna(a1)
             a2 = muunna(a2)
             b1 = muunna(b1)
 
-        elif ruutu == "A2" or ruutu == "a2":
+        elif ruutu == "A2" or ruutu == "a2" or ruutu == "2A" or ruutu == "2a":
             a1 = muunna(a1)
             a2 = muunna(a2)
             a3 = muunna(a3)
             b2 = muunna(b2)
 
-        elif ruutu == "A3" or ruutu == "a3":
+        elif ruutu == "A3" or ruutu == "a3" or ruutu == "3A" or ruutu == "3a":
             a2 = muunna(a2)
             a3 = muunna(a3)
             a4 = muunna(a4)
             b3 = muunna(b3)
 
-        elif ruutu == "A4" or ruutu == "a4":
+        elif ruutu == "A4" or ruutu == "a4" or ruutu == "4a" or ruutu == "4A":
             a3 = muunna(a3)
             a4 = muunna(a4)
             b4 = muunna(b4)
 
-        elif ruutu == "B1" or ruutu == "b1":
+        elif ruutu == "B1" or ruutu == "b1" or ruutu == "1B" or ruutu == "1b":
             a1 = muunna(a1)
             b1 = muunna(b1)
             b2 = muunna(b2)
             c1 = muunna(c1)
 
-        elif ruutu == "B2" or ruutu == "b2":
+        elif ruutu == "B2" or ruutu == "b2" or ruutu == "2b" or ruutu == "2B":
             a2 = muunna(a2)
             b1 = muunna(b1)
             b2 = muunna(b2)
             b3 = muunna(b3)
             c2 = muunna(c2)
 
-        elif ruutu == "B3" or ruutu == "b3":
+        elif ruutu == "B3" or ruutu == "b3" or ruutu == "3b" or ruutu == "3B":
             a3 = muunna(a3)
             b2 = muunna(b2)
             b3 = muunna(b3)
             b4 = muunna(b4)
             c3 = muunna(c3)
 
-        elif ruutu == "B4" or ruutu == "b4":
+        elif ruutu == "B4" or ruutu == "b4" or ruutu == "4b" or ruutu == "4B":
             a4 = muunna(a4)
             b3 = muunna(b3)
             b4 = muunna(b4)
             c4 = muunna(c4)
 
-        elif ruutu == "C1" or ruutu == "c1":
+        elif ruutu == "C1" or ruutu == "c1" or ruutu == "1c" or ruutu == "1C":
             b1 = muunna(b1)
             c1 = muunna(c1)
             c2 = muunna(c2)
             d1 = muunna(d1)
 
-        elif ruutu == "C2" or ruutu == "c2":
+        elif ruutu == "C2" or ruutu == "c2" or ruutu == "2c" or ruutu == "2C":
             b2 = muunna(b2)
             c1 = muunna(c1)
             c2 = muunna(c2)
             c3 = muunna(c3)
             d2 = muunna(d2)
 
-        elif ruutu == "C3" or ruutu == "c3":
+        elif ruutu == "C3" or ruutu == "c3" or ruutu == "3C" or ruutu == "3c":
             b3 = muunna(b3)
             c2 = muunna(c2)
             c3 = muunna(c3)
             c4 = muunna(c4)
             d3 = muunna(d3)
 
-        elif ruutu == "C4" or ruutu == "c4":
+        elif ruutu == "C4" or ruutu == "c4" or ruutu == "4c" or ruutu == "4C":
             b4 = muunna(b4)
             c3 = muunna(c3)
             c4 = muunna(c4)
             d4 = muunna(d4)
 
-        elif ruutu == "D1" or ruutu == "d1":
+        elif ruutu == "D1" or ruutu == "d1" or ruutu == "1d" or ruutu == "1D":
             c1 = muunna(c1)
             d1 = muunna(d1)
             d2 = muunna(d2)
 
-        elif ruutu == "D2" or ruutu == "d2":
+        elif ruutu == "D2" or ruutu == "d2" or ruutu == "2d" or ruutu == "2D":
             c2 = muunna(c2)
             d1 = muunna(d1)
             d2 = muunna(d2)
             d3 = muunna(d3)
 
-        elif ruutu == "D3" or ruutu == "d3":
+        elif ruutu == "D3" or ruutu == "d3" or ruutu == "3d" or ruutu == "3D":
             c3 = muunna(c3)
             d2 = muunna(d2)
             d3 = muunna(d3)
             d4 = muunna(d4)
 
-        elif ruutu == "D4" or ruutu == "d4":
+        elif ruutu == "D4" or ruutu == "d4" or ruutu == "4d" or ruutu == "4D":
             c4 = muunna(c4)
             d3 = muunna(d3)
             d4 = muunna(d4)
-
+        elif ruutu == "help" or ruutu == "h":
+            print("-To reset the puzzle:\n[reset]\n-To exit the puzzle:\n[exit]/[stop]")
         elif ruutu == "reset":
             a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
         elif ruutu == "exit" or ruutu=="stop":
@@ -265,7 +267,9 @@ def examine(thing):
             result = cur.fetchall()
             for row in result:
                 position = row[0]
+            print("toimii")
             cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
+            print("toimii2")
 
         elif len(result2) > 0:
             cur.execute("SELECT ItemN from item WHERE ItemID = 4 AND PlayerID = 1")
@@ -283,15 +287,16 @@ def examine(thing):
                 result = cur.fetchall()
                 for row in result:
                     position = row[0]
+                print("toimii")
                 cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
-
+                print("toimii2")
         else:
-            print("There is nothing interesting in it.")
+            print("I as a coder have no idea how you got here...")
 
     elif thing == "room":
         cur.execute("SELECT positionID FROM Player;")
         playerpos = cur.fetchall()
-        cur.execute("select RoomDescr from Room where positionID = " + str(playerpos[0][0]))
+        cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
         kuvaus = cur.fetchall()
         print(str(kuvaus[0][0]))
         cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
