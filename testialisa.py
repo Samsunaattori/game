@@ -330,18 +330,24 @@ def drop(item):
         cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
         print("You dropped the "+str(item)+" on the ground.")
 
-def talking(potion):
+def talking(potionDrink, magicDrink):
+    #Palauttaa true/false riippuen onko rotta tapettu
     val=val2=val3=val4=val5=val6=0
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
     cur.execute("Select isAlive From npc")
     npcstate = cur.fetchall()
-    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and potion == True:
+    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and potionDrink == True:
         print("Hello, sir! I've been living in this castle for decades. I have been observing your and your family's life.")
         while val != '1' or val != '2' or val != '3' or val != 'exit': 
             val= input("Please choose one of the following: \n 1. Why can I understand you? \n 2. Can you help me get out of here?\n 3. [attack the rat]")
             if val == '3':
-                attack()
+                kill = attack(magicDrink)
+                if kill == True:
+                    print("The rat dropped a key.")
+                    return True
+                else:
+                    return False
             elif val == '1':
                 print("You can talk to me because you probably found a magic potion that allows you to talk to animals.")
                 val2 = input("1. Where's my family and servants? \n 2. Can you help me get out of here? \n 3. Why would anyone make a potion like that?")
