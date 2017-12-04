@@ -405,25 +405,35 @@ def talking(animalDrink):
                                     print("You drank the magic drink and the drink made you the size of an ant")
                                     print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                                     print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
-                                    #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
-                                    attack()
-                                    return
+                                    cur.execute("select playerid from item where itemn='needle'")
+                                    needle = cur.fetchall()
+                                    if str(needle[0][0]) != 'None':
+                                        print("However you are still holding a needle. Maybe you could use it to attack?")
+                                    else:
+                                        kill = attack(potionDrink)
+                                        if kill == True:
+                                            print("The rat dropped a key")
+                                            return True
+                                        else:
+                                            return False
                                 if val4 == '2':
                                     print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
                                     print("The rat dropped a key")
-                                    return
-                                    #LISÄÄ AVAIMEN PUDOTUS HUONEESEEN
+                                    cur.execute("update item set itemposition = 113 where itemn='key'")
+                                    cur.execute("update item set npcid = null where itemn='key'")
+                                    return False
                                 if val4 == 'exit':
                                     print("You ended the conversation with the rat.")
-                                    return
+                                    return False
                                 else:
                                     print("That is not an option. Please try again.")
                         elif val2 == '3':
                             print("Well, I think that maybe the maker of the potion thought it would be fun to be able to talk to animals.")
                             print("Come back to me if you other questions")
+                            return False
                         elif val2 == 'exit':
                             print("You ended the conversation with the rat.")
-                            return
+                            return False
                         else:
                             print("That is not an option. Please try again.")
 
@@ -436,30 +446,46 @@ def talking(animalDrink):
                             print("You drank the magic drink and the drink made you the size of an ant")
                             print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                             print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
-                            #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
-                            #attack()
-                            return
+                            cur.execute("select playerid from item where itemn='needle'")
+                            needle = cur.fetchall()
+                            if str(needle[0][0]) != 'None':
+                                print("However you are still holding a needle. Maybe you could use it to attack?")
+                            else:
+                                kill = attack(potionDrink)
+                                if kill == True:
+                                    print("The rat dropped a key")
+                                    return True
+                                else:
+                                    return False
                         if val6 == '2':
                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
                             print("The rat dropped a key")
-                            return
-                            #LISÄÄ AVAIMEN PUDOTUS HUONEESEEN
+                            cur.execute("update item set itemposition = 113 where itemn='key'")
+                            cur.execute("update item set npcid = null where itemn='key'")
+                            return False
                         if val6 == 'exit':
                             print("You ended the conversation with the rat.")
-                            return
+                            return False
                         else:
                             print("That is not an option. Please try again.")
                 elif val == '3':
-                    attack()
+                    kill = attack(potionDrink)
+                    if kill == True:
+                        print("The rat dropped a key")
+                        return True
+                    else:
+                        return False
                 elif val == 'exit':
                     print("You ended the conversation with the rat.")
-                    return
+                    return False
                 else:
                     print("That is not an option. Please try again.")
         else:
             print("There seems to be nobody to talk to.")
+            return False
     else:
             print("There seems to be nobody to talk to.")
+            return False
 
 #main game loop
 while (playerAlive == True):
