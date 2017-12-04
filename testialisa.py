@@ -330,6 +330,98 @@ def drop(item):
         cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
         print("You dropped the "+str(item)+" on the ground.")
 
+def talking(potion):
+    val=val2=val3=val4=val5=val6=0
+    cur.execute("SELECT positionID FROM Player;")
+    playerpos = cur.fetchall()
+    cur.execute("Select isAlive From npc")
+    npcstate = cur.fetchall()
+    if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and potion == True:
+        print("Hello, sir! I've been living in this castle for decades. I have been observing your and your family's life.")
+        while val != '1' or val != '2' or val != '3' or val != 'exit': 
+            val= input("Please choose one of the following: \n 1. Why can I understand you? \n 2. Can you help me get out of here?\n 3. [attack the rat]")
+            if val == '3':
+                attack()
+            elif val == '1':
+                print("You can talk to me because you probably found a magic potion that allows you to talk to animals.")
+                val2 = input("1. Where's my family and servants? \n 2. Can you help me get out of here? \n 3. Why would anyone make a potion like that?")
+                while val2 != '1' or val2 != '2' or val2 != '3' or val2 != 'exit':
+                     if val2 == '1':
+                         print("I'm afraid I don't know the answer to that question.")
+                         while val4 != '1' or val4 != '2' or val4 != 'exit':
+                            val4 = input("1. [attack] \n 2. Can you help me get out of here?")
+                            if val4 == '1':
+                                 attack()
+                            if val4 == '2':
+                                print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
+                                val5 = input("1. Yes, I will take the drink \n 2. No, thank you. Just help me get out of here.")
+                                while val5 != '1' or val5 != '2' or val5 != 'exit':
+                                    if val5 == '1':
+                                        print("Great! Here, take a magic drink I have for you.")
+                                        print("You drank the magic drink and the drink made you the size of an ant")
+                                        print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
+                                        print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
+                                        #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
+                                    elif val5 == '2':
+                                        print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
+                                        print("The rat dropped a key")
+                                        return
+                                        #LISÄÄ AVAIMEN PUDOTUS HUONEESEEN
+                                    elif val5 == 'exit':
+                                        return
+                                    else:
+                                        print("That is not an option. Please try again")
+                        elif val2 == '2':
+                                print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
+                                val6 = input("1. Yes, I will take the drink \n 2. No, thank you. Just help me get out of here.")
+                                while val6 != '1' or val6 != '2' or val6 != 'exit':
+                                    if val6 == '1':
+                                        print("Great! Here, take a magic drink I have for you.")
+                                        print("You drank the magic drink and the drink made you the size of an ant")
+                                        print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
+                                        print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
+                                        #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
+                                    elif val6 == '2':
+                                        print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
+                                        print("The rat dropped a key")
+                                        return
+                                        #LISÄÄ AVAIMEN PUDOTUS HUONEESEEN
+                                    elif val6 == 'exit':
+                                        return
+                                    else:
+                                        print("That is not an option. Please try again")
+
+                        elif val2 == '3':
+                            print("Well, I think that maybe the maker of the potion thought it would be fun to be able to talk to animals.")
+                            print("Come back to me if you other questions")
+                        elif val2 == 'exit':
+                            return
+                        else:
+                            print("That is not an option. Please try again")
+            elif val == '2':
+                print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
+                val6 = input("1. Yes, I will take the drink \n 2. No, thank you. Just help me get out of here.")
+                while val6 != '1' or val6 != '2' or val6 != 'exit':
+                    if val6 == '1':
+                        print("Great! Here, take a magic drink I have for you.")
+                        print("You drank the magic drink and the drink made you the size of an ant")
+                        print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
+                        print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
+                        #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
+                    elif val6 == '2':
+                        print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
+                        print("The rat dropped a key")
+                        return
+                        #LISÄÄ AVAIMEN PUDOTUS HUONEESEEN
+                    elif val6 == 'exit':
+                        return
+                    else:
+                        print("That is not an option. Please try again")
+            elif val == 'exit':
+                return
+            else:
+                print("That is not an option. Please try again.")
+
 #main game loop
 while (playerAlive == True):
     command = str(input("Insert command: "))
