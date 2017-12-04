@@ -357,6 +357,8 @@ def talking(animalDrink):
                                     if kill == True:
                                         print("The rat dropped a key")
                                         return True
+                                    else:
+                                        return False
                                 if val3 == '2':
                                     print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
                                     while val5 != '1' or val5 != '2' or val5 != 'exit':
@@ -366,21 +368,32 @@ def talking(animalDrink):
                                             print("You drank the magic drink and the drink made you the size of an ant")
                                             print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                                             print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
-                                            #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
+                                            cur.execute("select playerid from item where itemn='needle'")
+                                            needle = cur.fetchall()
+                                            if str(needle[0][0]) != 'None':
+                                                print("However you are still holding a needle. Maybe you could use it to attack?")
+                                            else:
+                                                kill = attack(potionDrink)
+                                                if kill == True:
+                                                    print("The rat dropped a key")
+                                                    return True
+                                                else:
+                                                    return False
                                         if val5 == '2':
                                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
                                             print("The rat dropped a key")
-                                            return
-                                            #LISÄÄ AVAIMEN PUDOTUS HUONEESEEN
+                                            cur.execute("update item set itemposition = 113 where itemn='key'")
+                                            cur.execute("update item set npcid = null where itemn='key'")
+                                            return False
                                         if val5 == 'exit':
                                             print("You ended the conversation with the rat.")
-                                            return
+                                            return False
                                         else:
                                             print("That is not an option. Please try again.")
                                             
                                 if val3 == 'exit':
                                     print("You ended the conversation with the rat.")
-                                    return
+                                    return False
                                 else:
                                     print("That is not an option. Please try again.")
                         elif val2 == '2':
@@ -393,7 +406,7 @@ def talking(animalDrink):
                                     print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                                     print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
                                     #TARKISTA ONKO PELAAJALLA NEULA INVENTORYS JOS ON TULOSTA INVENTORY jos ei tulosta että hän voi taistella käsin
-                                    #attack()
+                                    attack()
                                     return
                                 if val4 == '2':
                                     print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
