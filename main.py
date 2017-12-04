@@ -7,8 +7,9 @@ cur = db.cursor()
 playerAlive = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
-            "-To exit game:","[exit]","-To examine an item, room or a container:",
-            "[examine (object)]","-To pick up/take an item:",
+            "-To exit game:","[exit]","-To examine an item or a container:",
+            "[examine (object)]","-To examine the room you are in:",
+            "[examine room]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
@@ -317,6 +318,13 @@ def drop(item):
         position = result[0][0]
         cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
         print("You dropped the "+str(item)+" on the ground.")
+        if item == "cheese":
+            cur.execute("SELECT positionID FROM player")
+            result = cur.fetchall()
+            if result[0][0] == 113:
+                print("A rat comes out of it's hole to eat the cheese. It appears to have a key tied to it's tail!")
+    else:
+        print("You don't have that with you")
 
 #main game loop
 while (playerAlive == True):

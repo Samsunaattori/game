@@ -314,6 +314,13 @@ def drop(item):
         position = result[0][0]
         cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
         print("You dropped the "+str(item)+" on the ground.")
+        if item == "cheese":
+            cur.execute("SELECT positionID FROM player")
+            result = cur.fetchall()
+            if result[0][0] == 113:
+                print("A rat comes out of it's hole to eat the cheese. It appears to have a key tied to it's tail!")
+    else:
+        print("You don't have that with you")
 
 #main game loop
 while (playerAlive == True):
