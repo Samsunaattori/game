@@ -28,7 +28,7 @@ def puzzle():
         print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
 
-        ruutu = input("Give command: ")
+        ruutu = input("Give a command: ")
 
         if ruutu == "A1" or ruutu == "a1" or ruutu == "1A" or ruutu == "1a":
             a1 = muunna(a1)
@@ -148,14 +148,12 @@ def puzzle():
 def move(command):
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
     haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
     cur.execute(haku)
     destination = cur.fetchall()
     if cur.rowcount == 1:
         cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
         locked = cur.fetchall()
-        print(str(locked[0][0]))
         if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and int(locked[0][0])== 1:
             if puzzle() == True:
                 cur.execute("UPDATE Connect set isLocked = 0 where RoomFrom = 122 and RoomTo = 121")
@@ -166,9 +164,11 @@ def move(command):
             cur.execute(liikkuu)
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
-            print(str(playerpos[0][0]))
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
+            cur.execute("Select RoomN from Room where positionID = " + str(playerpos[0][0]))
+            loc = cur.fetchall()
+            print("You are now in the " + str(loc[0][0]))
             print(str(kuvaus[0][0]))
             cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
             tavarat = cur.fetchall()
@@ -210,7 +210,6 @@ def attack(magicDrink):
     #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
     if playerpos[0][0] == 113:
         tool=input("What do you want to use to attack?: ")
         if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
@@ -502,7 +501,6 @@ while (playerAlive == True):
         command = command.replace(i, " ")
     
     wordCount = len(command.split())
-    print(str(wordCount))
 
     if wordCount == 1:
         #directions you can go to:
