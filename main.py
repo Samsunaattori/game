@@ -562,6 +562,11 @@ while (playerAlive == True):
         elif word1 == "stab" or word1 == "attack":
             resattack = attack(magicDrink)
             print(resattack)
+            if resattack == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+            if resattack == 'playerdead':
+                playerAlive = False
 
         elif word1 == "talk":
             print("You talked to "+word2)
@@ -580,13 +585,18 @@ while (playerAlive == True):
         elif word1 == "talk" and word2 == "to":
             restalk = talking(animalDrink)
             print(restalk)
+            if restalk == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+            if restalk == 'playerdead':
+                playerAlive = False
             print("You talked to "+word3)
 
         else:
             print("That could not be done I'm afraid")
           
         
-print("goodbye!")
+print("Goodbye!")
     
 
     
