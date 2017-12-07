@@ -331,7 +331,6 @@ def drop(item):
         print("You dropped the "+str(item)+" on the ground.")
 
 def talking(animalDrink):
-    #Palauttaa true/false riippuen kuoliko rotta
     val=val2=val3=val4=val5=val6=0
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
