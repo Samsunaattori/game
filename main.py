@@ -5,7 +5,7 @@ db = mysql.connector.connect(host="localhost", user="dbuser",
 
 cur = db.cursor()
 playerAlive = True
-magicDrink = True
+magicDrink = False
 animalDrink = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
@@ -461,10 +461,10 @@ def talking(animalDrink, magicDrink):
                             needle = cur.fetchall()
                             if str(needle[0][0]) != 'None':
                                 print("However you are still holding a needle. Maybe you could use it to attack?")
-                                kill = attack(potionDrink)
+                                kill = attack(magicDrink)
                                 return kill
                             else:
-                                kill = attack(potionDrink)
+                                kill = attack(magicrink)
                                 return kill
                         elif val6 == '2':
                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
@@ -478,7 +478,7 @@ def talking(animalDrink, magicDrink):
                         else:
                             print("That is not an option. Please try again.")
                 elif val == '3':
-                    kill = attack(potionDrink)
+                    kill = attack(magicDrink)
                     return kill
                 elif val == 'exit':
                     print("You ended the conversation with the rat.")
@@ -550,7 +550,6 @@ while (playerAlive == True):
         
         elif word1 == "stab" or word1 == "attack":
             resattack = attack(magicDrink)
-            print(resattack)
             if resattack == 'ratdead':
                 cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
                 magicDrink = False
@@ -561,16 +560,13 @@ while (playerAlive == True):
                 playerAlive = False
 
         elif word1 == "talk":
-            restalk = talking(animalDrink)
-            print(restalk)
+            restalk = talking(animalDrink, magicDrink)
             if restalk == 'ratdead':
                 cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
                 magicDrink = False
                 cur.execute("update item set itemposition = 113 where itemn='key'")
                 cur.execute("update item set npcid = null where itemn='key'")
                 print("The rat dropped a key")
-            
-            print("You talked to "+word2)
         
         else:
             print("That could not be done I'm afraid")
@@ -584,8 +580,7 @@ while (playerAlive == True):
             pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
-            restalk = talking(animalDrink)
-            print(restalk)
+            restalk = talking(animalDrink, magicDrink)
             if restalk == 'ratdead':
                 cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
                 magicDrink = False
@@ -595,13 +590,7 @@ while (playerAlive == True):
                 
             if restalk == 'playerdead':
                 playerAlive = False
-            print("You talked to "+word3)
 
         else:
             print("That could not be done I'm afraid")
-          
-        
-print("Goodbye!")
-    
-
-    
+print("Game over!")
