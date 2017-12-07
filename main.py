@@ -1,4 +1,4 @@
-#main game loop
+#PELISTÄ PUUTTUU VIELÄ DRINK ALIOHJELMA
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
@@ -6,7 +6,7 @@ db = mysql.connector.connect(host="localhost", user="dbuser",
 cur = db.cursor()
 playerAlive = True
 magicDrink = False
-animalDrink = True
+animalDrink = False
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item or a container:",
