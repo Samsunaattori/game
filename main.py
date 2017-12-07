@@ -216,6 +216,10 @@ def attack(magicDrink):
         if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
             print("The rat was stronger than you and you died.")
             return 'playerdead'
+        elif tool == 'sword' and magicDrink == True:
+            print("You cannot carry a sword because the magic drink made you so small.")
+            print("The rat was fast and killed you.")
+            return 'playerdead'
         else:
             haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
             cur.execute(haku)
@@ -223,14 +227,9 @@ def attack(magicDrink):
             print(str(tulos))
             if len(tulos)>0:
                 if str(tulos[0][0]) != "None":
-                    if tool == "sword":
-                        if magicDrink == False:
-                            print("You killed the rat")
-                            return True
-                        else:
-                            print("You are not carrying a sword anymore and cannot use it")
-                            print("The rat was fast and killed you")
-                            return 'playerdead'
+                    if tool == "sword" and magicDrink == False:
+                        print("You killed the rat")
+                        return 'ratdead'
                     elif tool == "needle":
                         print("You killed the rat")
                         return 'ratdead'
@@ -348,7 +347,7 @@ def drop(item):
     else:
         print("You don't have that with you")
 
-def talking(animalDrink):
+def talking(animalDrink, magicDrink):
     val=val2=val3=val4=val5=val6=0
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
@@ -370,12 +369,12 @@ def talking(animalDrink):
                             while val3 != '1' or val3 != '2' or val3 != 'exit':
                                 val3 = input("1. [attack]\n2. Can you help me get out of here?\n")
                                 if val3 == '1':
-                                    kill = attack(potionDrink)
-                                    if kill == True:
+                                    kill = attack(magicDrink)
+                                    if kill == 'ratdead':
                                         print("The rat dropped a key")
-                                        return True
+                                        return kill
                                     else:
-                                        return False
+                                        return kill
                                 if val3 == '2':
                                     print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
                                     while val5 != '1' or val5 != '2' or val5 != 'exit':
@@ -390,27 +389,27 @@ def talking(animalDrink):
                                             if str(needle[0][0]) != 'None':
                                                 print("However you are still holding a needle. Maybe you could use it to attack?")
                                             else:
-                                                kill = attack(potionDrink)
-                                                if kill == True:
+                                                kill = attack(magicDrink)
+                                                if kill == 'ratdead':
                                                     print("The rat dropped a key")
-                                                    return True
+                                                    return kill
                                                 else:
-                                                    return False
+                                                    return kill
                                         elif val5 == '2':
                                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
                                             print("The rat dropped a key")
                                             cur.execute("update item set itemposition = 113 where itemn='key'")
                                             cur.execute("update item set npcid = null where itemn='key'")
-                                            return False
+                                            return 'bothalive'
                                         elif val5 == 'exit':
                                             print("You ended the conversation with the rat.")
-                                            return False
+                                            return 'bothalive'
                                         else:
                                             print("That is not an option. Please try again.")
                                             
                                 if val3 == 'exit':
                                     print("You ended the conversation with the rat.")
-                                    return False
+                                    return 'bothalive'
                                 else:
                                     print("That is not an option. Please try again.")
                         elif val2 == '2':
@@ -427,30 +426,30 @@ def talking(animalDrink):
                                     if str(needle[0][0]) != 'None':
                                         print("However you are still holding a needle. Maybe you could use it to attack?")
                                     else:
-                                        kill = attack(potionDrink)
-                                        if kill == True:
+                                        kill = attack(magicDrink)
+                                        if kill == 'ratdead':
                                             print("The rat dropped a key")
-                                            return True
+                                            return kill
                                         else:
-                                            return False
+                                            return kill
                                 elif val4 == '2':
                                     print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
                                     print("The rat dropped a key")
                                     cur.execute("update item set itemposition = 113 where itemn='key'")
                                     cur.execute("update item set npcid = null where itemn='key'")
-                                    return False
+                                    return 'bothalive'
                                 elif val4 == 'exit':
                                     print("You ended the conversation with the rat.")
-                                    return False
+                                    return 'bothalive'
                                 else:
                                     print("That is not an option. Please try again.")
                         elif val2 == '3':
                             print("Well, I think that maybe the maker of the potion thought it would be fun to be able to talk to animals.")
                             print("Come back to me if you other questions")
-                            return False
+                            return 'bothalive'
                         elif val2 == 'exit':
                             print("You ended the conversation with the rat.")
-                            return False
+                            return 'bothalive'
                         else:
                             print("That is not an option. Please try again.")
 
@@ -469,40 +468,40 @@ def talking(animalDrink):
                                 print("However you are still holding a needle. Maybe you could use it to attack?")
                             else:
                                 kill = attack(potionDrink)
-                                if kill == True:
+                                if kill == 'ratdead':
                                     print("The rat dropped a key")
-                                    return True
+                                    return kill
                                 else:
-                                    return False
+                                    return kill
                         elif val6 == '2':
                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
                             print("The rat dropped a key")
                             cur.execute("update item set itemposition = 113 where itemn='key'")
                             cur.execute("update item set npcid = null where itemn='key'")
-                            return False
+                            return 'bothalive'
                         elif val6 == 'exit':
                             print("You ended the conversation with the rat.")
-                            return False
+                            return 'bothalive'
                         else:
                             print("That is not an option. Please try again.")
                 elif val == '3':
                     kill = attack(potionDrink)
-                    if kill == True:
+                    if kill == 'ratdead':
                         print("The rat dropped a key")
-                        return True
+                        return kill
                     else:
-                        return False
+                        return kill
                 elif val == 'exit':
                     print("You ended the conversation with the rat.")
-                    return False
+                    return 'bothalive'
                 else:
                     print("That is not an option. Please try again.")
         else:
             print("There seems to be nobody to talk to.")
-            return False
+            return 'bothalive'
     else:
             print("There seems to be nobody to talk to.")
-            return False
+            return 'bothalive'
 
 #main game loop
 while (playerAlive == True):
@@ -561,7 +560,8 @@ while (playerAlive == True):
             print("You drank the "+word2)
         
         elif word1 == "stab" or word1 == "attack":
-            res = attack(magicDrink)
+            resattack = attack(magicDrink)
+            print(resattack)
 
         elif word1 == "talk":
             print("You talked to "+word2)
@@ -578,7 +578,8 @@ while (playerAlive == True):
             pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
-            res = talking(animalDrink)
+            restalk = talking(animalDrink)
+            print(restalk)
             print("You talked to "+word3)
 
         else:
