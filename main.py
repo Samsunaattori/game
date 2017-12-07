@@ -5,6 +5,8 @@ db = mysql.connector.connect(host="localhost", user="dbuser",
 
 cur = db.cursor()
 playerAlive = True
+magicDrink = True
+animalDrink = True
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item or a container:",
@@ -204,30 +206,46 @@ def inventory():
             print(row[0])
     else:
         print("You have no items in your inventory")
-def attack():
+def attack(magicDrink):
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
     print(str(playerpos[0][0]))
     if playerpos[0][0] == 113:
         tool=input("What do you want to use to attack?: ")
-        haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
-        cur.execute(haku)
-        tulos = cur.fetchall()
-        print(str(tulos))
-        if len(tulos)>0:
-            if str(tulos[0][0]) != "None":
-                if tool == "sword":
-                    print("You killed the rat")
-                elif tool == "needle":
-                    print("You killed the rat")
-                elif tool == "knife":
-                    print("The rat is stronger than you and it killed you")
+        if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
+            print("The rat was stronger than you and you died.")
+        else:
+            haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
+            cur.execute(haku)
+            tulos = cur.fetchall()
+            print(str(tulos))
+            if len(tulos)>0:
+                if str(tulos[0][0]) != "None":
+                    if tool == "sword":
+                        if magicDrink == False:
+                            print("You killed the rat")
+                            return True
+                        else:
+                            print("You are not carrying a sword anymore and cannot use it")
+                            print("The rat was fast and killed you")
+                            return False
+                    elif tool == "needle":
+                        print("You killed the rat")
+                        return True
+                    elif tool == "knife":
+                        print("The rat is stronger than you and it killed you")
+                        return False
+                    else:
+                        print("You cannot use that to attack")
                 else:
-                    print("You cannot use that to attack")
+                    print("You don't have that item")
+                    return False
             else:
                 print("You don't have that item")
+                return False
     else:
         print("There's nobody to attack.")
+        return False
 
 def examine(thing):
     cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
@@ -540,7 +558,7 @@ while (playerAlive == True):
             print("You drank the "+word2)
         
         elif word1 == "stab" or word1 == "attack":
-            attack()
+            res = attack(magicDrink)
 
         elif word1 == "talk":
             print("You talked to "+word2)
@@ -557,6 +575,7 @@ while (playerAlive == True):
             pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
+            res = talking(animalDrink)
             print("You talked to "+word3)
 
         else:
