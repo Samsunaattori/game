@@ -207,6 +207,7 @@ def inventory():
     else:
         print("You have no items in your inventory")
 def attack(magicDrink):
+    #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
     print(str(playerpos[0][0]))
@@ -214,6 +215,7 @@ def attack(magicDrink):
         tool=input("What do you want to use to attack?: ")
         if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
             print("The rat was stronger than you and you died.")
+            return 'playerdead'
         else:
             haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
             cur.execute(haku)
@@ -228,24 +230,25 @@ def attack(magicDrink):
                         else:
                             print("You are not carrying a sword anymore and cannot use it")
                             print("The rat was fast and killed you")
-                            return False
+                            return 'playerdead'
                     elif tool == "needle":
                         print("You killed the rat")
-                        return True
+                        return 'ratdead'
                     elif tool == "knife":
                         print("The rat is stronger than you and it killed you")
-                        return False
+                        return 'playerdead'
                     else:
-                        print("You cannot use that to attack")
+                        print("You cannot use that to attack. Please try again.")
+                        return 'bothalive'
                 else:
-                    print("You don't have that item")
-                    return False
+                    print("You don't have that item. Please try again.")
+                    return 'bothalive'
             else:
-                print("You don't have that item")
-                return False
+                print("You don't have that item. Please try again.")
+                return 'bothalive'
     else:
-        print("There's nobody to attack.")
-        return False
+        print("There seems to be nobody to attack.")
+        return 'bothalive'
 
 def examine(thing):
     cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
