@@ -9,6 +9,7 @@ magicDrink = False
 animalDrink = False
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
+            "-Top open a gate:","[open gate]",
             "-To exit game:","[exit]","-To examine an item or a container:",
             "[examine (object)]","-To examine the room you are in:",
             "[examine room]","-To pick up/take an item:",
@@ -491,6 +492,31 @@ def talking(animalDrink, magicDrink):
             print("There seems to be nobody to talk to.")
             return 'bothalive'
 
+def openGate():
+    cur.execute("SELECT PositionID FROM player WHERE PositionID = 121")
+    result = cur.fetchall()
+    if len(result) > 0:
+        print("toimii1")
+        cur.execute("SELECT ItemN FROM item WHERE PlayerID = 1 AND ItemN = 'key'")
+        print("toimii2")
+        result = cur.fetchall()
+        if len(result) > 0:
+            return 'won'
+        else:
+            return 'noKey'
+    else:
+        return 'noGate'
+
+print("It is early late morning. Tim, the 12 year old boy who you play as, has just woken up from his bed, and \
+to his surprise it seems to be almost noon already. This is unusual, because one of his servants usually \
+wakes him up at 9am. After waiting for a while, he starts to yell demanding for someone to come help him \
+up from his bed, but nobody answers. An hour later, bored to death, he finally rises from his bed on his own, \
+ready to find something to do. \n Two hours later, still nothing. Not a soul seems to realize he is here. \
+Then he finally realized, that if there is no-one to help him, there propably is no-one to stop him from \
+doing whatever he wants. 'With everyone gone, maybe I could finally get out of the castle and see what the \
+world really looks like!' And so he becan his quest of wcaping the castle.")
+examine("room")
+
 #main game loop
 while (playerAlive == True):
     command = str(input("Insert command: "))
@@ -545,6 +571,17 @@ while (playerAlive == True):
 
         elif word1 == "drink":
             print("You drank the "+word2)
+
+        elif word1 == "open" and word2 == "gate":
+            isOpened = openGate()
+            if isOpened == 'won':
+                print("You won the game!")
+            elif isOpened == 'noKey':
+                print("You don't have the gate key")
+            elif isOpened == 'noGate':
+                print("You don't see a gate you could open here")
+                wonGame = True
+                playerAlive = False
         
         elif word1 == "stab" or word1 == "attack":
             resattack = attack(magicDrink)
