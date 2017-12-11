@@ -522,6 +522,7 @@ examine("room")
 
 #main game loop
 while (playerAlive == True):
+    print("")
     command = str(input("Insert command: "))
     command = command.lower()
     for i in [".",",","!","?","'",'"',"(",")","[","]",]:
