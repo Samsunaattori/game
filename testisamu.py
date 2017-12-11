@@ -1,10 +1,12 @@
-#main game loop
+#PELISTÄ PUUTTUU VIELÄ DRINK ALIOHJELMA
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
 
 cur = db.cursor()
 playerAlive = True
+magicDrink = False
+animalDrink = False
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
             "-To exit game:","[exit]","-To examine an item or a container:",
@@ -26,7 +28,7 @@ def puzzle():
         print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
 
-        ruutu = input("Give command: ")
+        ruutu = input("Give a command: ")
 
         if ruutu == "A1" or ruutu == "a1" or ruutu == "1A" or ruutu == "1a":
             a1 = muunna(a1)
@@ -164,6 +166,9 @@ def move(command):
             playerpos = cur.fetchall()
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
+            cur.execute("Select RoomN from Room where positionID = " + str(playerpos[0][0]))
+            loc = cur.fetchall()
+            print("You are now in the " + str(loc[0][0]))
             print(str(kuvaus[0][0]))
             cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
             tavarat = cur.fetchall()
@@ -201,30 +206,47 @@ def inventory():
             print(row[0])
     else:
         print("You have no items in your inventory")
-def attack():
+def attack(magicDrink):
+    #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
     if playerpos[0][0] == 113:
         tool=input("What do you want to use to attack?: ")
-        haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
-        cur.execute(haku)
-        tulos = cur.fetchall()
-        print(str(tulos))
-        if len(tulos)>0:
-            if str(tulos[0][0]) != "None":
-                if tool == "sword":
-                    print("You killed the rat")
-                elif tool == "needle":
-                    print("You killed the rat")
-                elif tool == "knife":
-                    print("The rat is stronger than you and it killed you")
+        if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
+            print("The rat was stronger than you and you died.")
+            return 'playerdead'
+        elif tool == 'sword' and magicDrink == True:
+            print("You cannot carry a sword because the magic drink made you so small.")
+            print("The rat was fast and killed you.")
+            return 'playerdead'
+        else:
+            haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
+            cur.execute(haku)
+            tulos = cur.fetchall()
+            print(str(tulos))
+            if len(tulos)>0:
+                if str(tulos[0][0]) != "None":
+                    if tool == "sword" and magicDrink == False:
+                        print("You killed the rat")
+                        return 'ratdead'
+                    elif tool == "needle":
+                        print("You killed the rat")
+                        return 'ratdead'
+                    elif tool == "knife":
+                        print("The rat is stronger than you and it killed you")
+                        return 'playerdead'
+                    else:
+                        print("You cannot use that to attack. Please try again.")
+                        return 'bothalive'
                 else:
-                    print("You cannot use that to attack")
+                    print("You don't have that item. Please try again.")
+                    return 'bothalive'
             else:
-                print("You don't have that item")
+                print("You don't have that item. Please try again.")
+                return 'bothalive'
     else:
-        print("There's nobody to attack.")
+        print("There seems to be nobody to attack.")
+        return 'bothalive'
 
 def examine(thing):
     cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
@@ -245,6 +267,8 @@ def examine(thing):
         for row in resultInRoom:
             print(row[0])
     elif len(resultContainer) > 0:
+        for row in resultContainer:
+            print(row[0])
         cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
     INNER JOIN player ON container.ContainerPosition = player.PositionID WHERE container.containerID = 3)")
         result = cur.fetchall()
@@ -254,8 +278,6 @@ def examine(thing):
         result2 = cur.fetchall()
 
         if len(result) > 0:
-            for row in resultContainer:
-                print(row[0])
             for row in result:
                 item = row[0]
             print("A "+str(item)+" dropped from it.")
@@ -264,7 +286,9 @@ def examine(thing):
             result = cur.fetchall()
             for row in result:
                 position = row[0]
+            print("toimii")
             cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
+            print("toimii2")
 
         elif len(result2) > 0:
             cur.execute("SELECT ItemN from item WHERE ItemID = 4 AND PlayerID = 1")
@@ -274,8 +298,6 @@ def examine(thing):
                 print("You are too short to examine it")
 
             else:
-                for row in resultContainer:
-                    print(row[0])
                 for row in result2:
                     item = row[0]
                 print("A "+str(item)+" dropped from it.")
@@ -324,6 +346,166 @@ def drop(item):
     else:
         print("You don't have that with you")
 
+def talking(animalDrink, magicDrink):
+    val=val2=val3=val4=val5=val6=0
+    cur.execute("SELECT positionID FROM Player;")
+    playerpos = cur.fetchall()
+    cur.execute("Select isAlive From npc")
+    npcstate = cur.fetchall()
+    cur.execute("select itemposition from item where itemn='cheese'")
+    cheese = cur.fetchall()
+    if str(cheese[0][0]) != 'None':
+        if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and animalDrink == True:
+            print("Hello, sir! I've been living in this castle for decades. I have been observing your and your family's life.")
+            while val != '1' or val != '2' or val != '3' or val != 'exit':
+                val= input("Please choose one of the following: \n1. Why can I understand you?\n2. Can you help me get out of here?\n3. [attack the rat]\n")
+                if val == '1':
+                    print("You can talk to me because you probably found a magic potion that allows you to talk to animals.")
+                    while val2 != '1' or val2 != '2' or val2 != '3' or val2 != 'exit':
+                        val2 = input("1. Where's my family and servants?\n2. Can you help me get out of here?\n3. Why would anyone make a potion like that?\n")
+                        if val2 == '1':
+                            print("I'm afraid I don't know the answer to that question.")
+                            while val3 != '1' or val3 != '2' or val3 != 'exit':
+                                val3 = input("1. [attack]\n2. Can you help me get out of here?\n")
+                                if val3 == '1':
+                                    kill = attack(magicDrink)
+                                    return kill
+                                if val3 == '2':
+                                    print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
+                                    while val5 != '1' or val5 != '2' or val5 != 'exit':
+                                        val5 = input("1. Yes, I will take the drink\n2. No, thank you. Just help me get out of here.\n")
+                                        if val5 == '1':
+                                            print("Great! Here, take a magic drink I have for you.")
+                                            magicDrink = True
+                                            print("You drank the magic drink and the drink made you the size of an ant")
+                                            print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
+                                            print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
+                                            cur.execute("select playerid from item where itemn='needle'")
+                                            needle = cur.fetchall()
+                                            if str(needle[0][0]) != 'None':
+                                                print("However you are still holding a needle. Maybe you could use it to attack?")
+                                                kill = attack(magicDrink)
+                                                return kill
+                                            else:
+                                                kill = attack(magicDrink)
+                                                return kill
+                                        elif val5 == '2':
+                                            print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
+                                            cur.execute("update item set itemposition = 113 where itemn='key'")
+                                            cur.execute("update item set npcid = null where itemn='key'")
+                                            print("The rat dropped a key")
+                                            return 'bothalive'
+                                        elif val5 == 'exit':
+                                            print("You ended the conversation with the rat.")
+                                            return 'bothalive'
+                                        else:
+                                            print("That is not an option. Please try again.")
+                                            
+                                if val3 == 'exit':
+                                    print("You ended the conversation with the rat.")
+                                    return 'bothalive'
+                                else:
+                                    print("That is not an option. Please try again.")
+                        elif val2 == '2':
+                            print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
+                            while val4 != '1' or val4 != '2' or val4 != 'exit':
+                                val4 = input("1. Yes, I will take the drink\n2. No, thank you. Just help me get out of here.\n")
+                                if val4 == '1':
+                                    print("Great! Here, take a magic drink I have for you.")
+                                    magicDrink = True
+                                    print("You drank the magic drink and the drink made you the size of an ant")
+                                    print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
+                                    print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
+                                    cur.execute("select playerid from item where itemn='needle'")
+                                    needle = cur.fetchall()
+                                    if str(needle[0][0]) != 'None':
+                                        print("However you are still holding a needle. Maybe you could use it to attack?")
+                                        kill = attack(magicDrink)
+                                        return kill
+                                    else:
+                                        kill = attack(magicDrink)
+                                        return kill
+                                elif val4 == '2':
+                                    print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
+                                    cur.execute("update item set itemposition = 113 where itemn='key'")
+                                    cur.execute("update item set npcid = null where itemn='key'")
+                                    print("The rat dropped a key")
+                                    return 'bothalive'
+                                elif val4 == 'exit':
+                                    print("You ended the conversation with the rat.")
+                                    return 'bothalive'
+                                else:
+                                    print("That is not an option. Please try again.")
+                        elif val2 == '3':
+                            print("Well, I think that maybe the maker of the potion thought it would be fun to be able to talk to animals.")
+                            print("Come back to me if you other questions")
+                            return 'bothalive'
+                        elif val2 == 'exit':
+                            print("You ended the conversation with the rat.")
+                            return 'bothalive'
+                        else:
+                            print("That is not an option. Please try again.")
+
+                elif val == '2':
+                    print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
+                    while val6 != '1' or val6 != '2' or val6 != 'exit':
+                        val6 = input("1. Yes, I will take the drink\n2. No, thank you. Just help me get out of here.\n")
+                        if val6 == '1':
+                            print("Great! Here, take a magic drink I have for you.")
+                            magicDrink = True
+                            print("You drank the magic drink and the drink made you the size of an ant")
+                            print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
+                            print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
+                            cur.execute("select playerid from item where itemn='needle'")
+                            needle = cur.fetchall()
+                            if str(needle[0][0]) != 'None':
+                                print("However you are still holding a needle. Maybe you could use it to attack?")
+                                kill = attack(magicDrink)
+                                return kill
+                            else:
+                                kill = attack(magicrink)
+                                return kill
+                        elif val6 == '2':
+                            print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
+                            cur.execute("update item set itemposition = 113 where itemn='key'")
+                            cur.execute("update item set npcid = null where itemn='key'")
+                            print("The rat dropped a key")
+                            return 'bothalive'
+                        elif val6 == 'exit':
+                            print("You ended the conversation with the rat.")
+                            return 'bothalive'
+                        else:
+                            print("That is not an option. Please try again.")
+                elif val == '3':
+                    kill = attack(magicDrink)
+                    return kill
+                elif val == 'exit':
+                    print("You ended the conversation with the rat.")
+                    return 'bothalive'
+                else:
+                    print("That is not an option. Please try again.")
+        else:
+            print("There seems to be nobody to talk to.")
+            return 'bothalive'
+    else:
+            print("There seems to be nobody to talk to.")
+            return 'bothalive'
+
+def openGate():
+    cur.execute("SELECT PositionID FROM player WHERE PositionID = 121")
+    result = cur.fetchall()
+    if len(result) > 0:
+        print("toimii1")
+        cur.execute("SELECT ItemN FROM item WHERE PlayerID = 1 AND ItemN = 'key'")
+        print("toimii2")
+        result = cur.fetchall()
+        if len(result) > 0:
+            return 'won'
+        else:
+            return 'noKey'
+    else:
+        return 'noGate'
+
 print("It is early late morning. Tim, the 12 year old boy who you play as, has just woken up from his bed, and \
 to his surprise it seems to be almost noon already. This is unusual, because one of his servants usually \
 wakes him up at 9am. After waiting for a while, he starts to yell demanding for someone to come help him \
@@ -334,6 +516,7 @@ doing whatever he wants. 'With everyone gone, maybe I could finally get out of t
 world really looks like!' And so he becan his quest of wcaping the castle.")
 examine("room")
 
+wonGame = False
 #main game loop
 while (playerAlive == True):
     command = str(input("Insert command: "))
@@ -388,12 +571,37 @@ while (playerAlive == True):
 
         elif word1 == "drink":
             print("You drank the "+word2)
+
+        elif word1 == "open" and word2 == "gate":
+            isOpened = openGate()
+            if isOpened == 'won':
+                print("You won the game!")
+                wonGame = True
+                playerAlive = False
+            elif isOpened == 'noKey':
+                print("You don't have the gate key")
+            elif isOpened == 'noGate':
+                print("You don't see a gate you could open here")
         
         elif word1 == "stab" or word1 == "attack":
-            attack()
+            resattack = attack(magicDrink)
+            if resattack == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+                cur.execute("update item set itemposition = 113 where itemn='key'")
+                cur.execute("update item set npcid = null where itemn='key'")
+                print("The rat dropped a key")
+            if resattack == 'playerdead':
+                playerAlive = False
 
         elif word1 == "talk":
-            print("You talked to "+word2)
+            restalk = talking(animalDrink, magicDrink)
+            if restalk == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+                cur.execute("update item set itemposition = 113 where itemn='key'")
+                cur.execute("update item set npcid = null where itemn='key'")
+                print("The rat dropped a key")
         
         else:
             print("That could not be done I'm afraid")
@@ -407,13 +615,20 @@ while (playerAlive == True):
             pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
-            print("You talked to "+word3)
+            restalk = talking(animalDrink, magicDrink)
+            if restalk == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+                cur.execute("update item set itemposition = 113 where itemn='key'")
+                cur.execute("update item set npcid = null where itemn='key'")
+                print("The rat dropped a key")
+                
+            if restalk == 'playerdead':
+                playerAlive = False
 
         else:
             print("That could not be done I'm afraid")
-          
-        
-print("goodbye!")
-    
-
-    
+if wonGame == True:
+    print("You won!")
+else:
+    print("Game over!")
