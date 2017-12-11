@@ -590,13 +590,13 @@ while (playerAlive == True):
         elif word1 == "open" and word2 == "gate":
             isOpened = openGate()
             if isOpened == 'won':
-                print("You won the game!")
+                wonGame = True
+                playerAlive = False
             elif isOpened == 'noKey':
                 print("You don't have the gate key")
             elif isOpened == 'noGate':
                 print("You don't see a gate you could open here")
-                wonGame = True
-                playerAlive = False
+                
         
         elif word1 == "stab" or word1 == "attack":
             resattack = attack(magicDrink)
