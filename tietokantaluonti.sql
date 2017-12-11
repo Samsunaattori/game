@@ -74,19 +74,19 @@ ItemID INT(12),
 FOREIGN KEY (NPCID) REFERENCES NPC(NPCID), 
 FOREIGN KEY (ItemID) REFERENCES Item(ItemID)); 
 
-INSERT INTO Room VALUES (212, "Library", "The library is furnished in a very old classical style. It has a couple of leather sofas and a black grand piano. You can move south to corridor from here.");
+INSERT INTO Room VALUES (212, "Library", "The library is furnished in a very old classical style. It has a couple of leather sofas and a black grand piano. You can move south to the corridor from here.");
 INSERT INTO Room VALUES (213, "Clothing Room", "The clothing room has a lot of clothes hanging. You can move south to the bedroom from here."); 
-INSERT INTO Room VALUES (222, "Corridor", "The corridor has a dark purple carpet goes all the way across the hallway. The corridor has multiple lit candles that create a dim and warm lighting. You can move north to library, east to bedroom and south to staircase from here.");
-INSERT INTO Room VALUES (223, "Tim's Bedroom", "The bedroom contains a window that the light shines through, a desk and a bed. You can move north to clothing room or west to corridor from here."); 
-INSERT INTO Room Values (231, "Guard Tower", "The guard tower’s walls are made of rock and have a couple of torches lighting it up. One of the guard tower's walls has a small crack. You can move east to staircase from here."); 
-INSERT INTO Room VALUES (232, "2nd floor stairs", "The stairs are wooden and have a golden colored railing. You can move north to corridor, west to guard tower or down to first floor."); 
-INSERT INTO Room VALUES (111, "Horse Stable", "The horse stable had a horse, but for one reason or another it is not there anymore. There is a haystack that propably is of no interest at all to you. You can move south to front yard drom here."); 
-INSERT INTO Room VALUES (112, "Living Room", "Living room has a few large couches and a huge table that is used for dining. There is also a fireplace that is empty. You can moce south to hall from here."); 
-INSERT INTO Room VALUES (113, "Storage Room", "Storage room used to have all kinds of foods and steam powered equipment in it, but now it seems empty. There is only a hole on the wall, that is probably made by a mouse or a rat. You can move south to kitchen from here."); 
-INSERT INTO Room VALUES (121, "Front Yard", "The front yard is a large, barely maintained piece of grassfield. The gate is located on the west side of it, and it needs the gate key to be opened. You can move north to horse stable or east to hall from here."); 
-INSERT INTO Room VALUES (122, "Hall", "The hall has a high ceiling, big windows and a stone flooring. The hall is lit up by a big copper chandelier with candles that is hanging from the ceiling. You can move west to front yard, north to living room, south to staircase or east to kitchen from here."); 
-INSERT INTO Room VALUES (123, "Kitchen", "Kitchen is a room where Tim wasn’t allowed to go alone. There was too many sharp objects that could hurt the young boy, but now it didn’t seem to have much left in it. There appears to be a closed shelf that he cannot reach. You can move east to hall or north to storage room from here."); 
-INSERT INTO Room VALUES (132, "1st floor stairs", "The stairs are wooden and have a golden colored railing. You can move north to hall or up to second floor from here.");
+INSERT INTO Room VALUES (222, "Corridor", "The corridor has a dark purple carpet goes all the way across the hallway. The corridor has multiple lit candles that create a dim and warm lighting. You can move north to the library, east to the bedroom and south to a staircase from here.");
+INSERT INTO Room VALUES (223, "Tim's Bedroom", "The bedroom contains a window that the light shines through, a desk and a bed. You can move north to the clothing room or west to the corridor from here."); 
+INSERT INTO Room Values (231, "Guard Tower", "The guard tower’s walls are made of rock and have a couple of torches lighting it up. One of the guard tower's walls has a small crack. You can move east to the staircase from here."); 
+INSERT INTO Room VALUES (232, "2nd floor stairs", "The stairs are wooden and have a golden colored railing. You can move north to a corridor, west to guard tower or down to first floor."); 
+INSERT INTO Room VALUES (111, "Horse Stable", "The horse stable had a horse, but for one reason or another it is not there anymore. There is a haystack that propably is of no interest at all to you. You can move south to the front yard drom here."); 
+INSERT INTO Room VALUES (112, "Living Room", "Living room has a few large couches and a huge table that is used for dining. There is also a fireplace that is empty. You can move south to the hall from here."); 
+INSERT INTO Room VALUES (113, "Storage Room", "Storage room used to have all kinds of foods and steam powered equipment in it, but now it seems empty. There is only a hole in the wall, that is probably made by a mouse or a rat. You can move south to the kitchen from here."); 
+INSERT INTO Room VALUES (121, "Front Yard", "The front yard is a large, barely maintained piece of grassfield. The gate is located on the west side of it, and it needs the gate key to be opened. You can move north to the horse stable or east to the hall from here."); 
+INSERT INTO Room VALUES (122, "Hall", "The hall has a high ceiling, big windows and a stone flooring. The hall is lit up by a big copper chandelier with candles that is hanging from the ceiling. You can move west to the front yard, north to the living room, south to the staircase or east to the kitchen from here."); 
+INSERT INTO Room VALUES (123, "Kitchen", "Kitchen is a room where Tim wasn’t allowed to go alone. There was too many sharp objects that could hurt the young boy, but now it didn’t seem to have much left in it. There appears to be a closed shelf that he cannot reach. You can move west to the hall or north to a storage room from here."); 
+INSERT INTO Room VALUES (132, "1st floor stairs", "The stairs are wooden and have a golden colored railing. You can move north to the hall or up to second floor from here.");
 
 INSERT INTO Player VALUES (1, 223, "Tim"); 
 
@@ -98,7 +98,7 @@ INSERT INTO Container VALUES (3, "haystack", "It is just a normal haystack, why 
 
 INSERT INTO Item VALUES (1, null, null, 212, null, "book", "There is a thick and old looking book, which appears to be written by a man named Stephenson. The back of the book has something written on it: 'To open the door, change everyone, and then surround the ones with nothing.'"); 
 INSERT INTO Item VALUES (2, null, null, 213, null, "sword", "A small silver colored sword. It's really sharp, so be careful not to stab yourself!"); 
-INSERT INTO Item VALUES (3, null, 2, null, null, "potion", "A magic potion.");
+INSERT INTO Item VALUES (3, null, 2, null, null, "potion", "A magic potion that makes you understand animals.");
 INSERT INTO Item VALUES (4, null, null, 111, null, "stool", "A small wooden stool."); 
 INSERT INTO Item VALUES (5, null, 3, null, null, "needle", "A small metallic needle");  
 INSERT INTO Item VALUES (6, null, null, 112, null, "painting", "A painting with copper colored frames. It appears to portray a man named mr. Stephenson. Behind the painting you see the following: \n 0 0 0 0 \n 0 1 1 0 \n 0 1 1 0 \n 0 0 0 0"); 
@@ -122,9 +122,9 @@ INSERT INTO Connect VALUES ("s", 0, 213, 223);
 INSERT INTO Connect VALUES ("w", 0, 232, 231); 
 INSERT INTO Connect VALUES ("d", 0, 232, 132); 
 INSERT INTO Connect VALUES ("n", 0, 232, 222); 
-INSERT INTO Connect VALUES ("e", 0, 231,232); 
+INSERT INTO Connect VALUES ("e", 0, 231, 232); 
 
-INSERT INTO Connect VALUES ("u", 0, 132,232); 
+INSERT INTO Connect VALUES ("u", 0, 132, 232); 
 INSERT INTO Connect VALUES ("n", 0, 132, 122); 
 INSERT INTO Connect VALUES ("n", 0, 122, 112); 
 INSERT INTO Connect VALUES ("e", 0, 122, 123); 
