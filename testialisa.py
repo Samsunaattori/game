@@ -1,16 +1,17 @@
-#main game loop
+#PELISTÄ PUUTTUU VIELÄ DRINK ALIOHJELMA
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
 
 cur = db.cursor()
 playerAlive = True
-animalDrink = True
-magicDrink = True
+magicDrink = False
+animalDrink = False
 commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west]/[w]",
             "[south]/[s]","[down]/[d]","[up]/[u]","-To open inventory:","[inventory]/[i]",
-            "-To exit game:","[exit]","-To examine an item, room or a container:",
-            "[examine (object)]","-To pick up/take an item:",
+            "-To exit game:","[exit]","-To examine an item or a container:",
+            "[examine (object)]","-To examine the room you are in:",
+            "[examine room]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
@@ -27,104 +28,105 @@ def puzzle():
         print("C "+str(c1)+" "+str(c2)+" "+str(c3)+" "+str(c4))
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
 
-        ruutu = input("Anna ruutu: ")
+        ruutu = input("Give a command: ")
 
-        if ruutu == "A1" or ruutu == "a1":
+        if ruutu == "A1" or ruutu == "a1" or ruutu == "1A" or ruutu == "1a":
             a1 = muunna(a1)
             a2 = muunna(a2)
             b1 = muunna(b1)
 
-        elif ruutu == "A2" or ruutu == "a2":
+        elif ruutu == "A2" or ruutu == "a2" or ruutu == "2A" or ruutu == "2a":
             a1 = muunna(a1)
             a2 = muunna(a2)
             a3 = muunna(a3)
             b2 = muunna(b2)
 
-        elif ruutu == "A3" or ruutu == "a3":
+        elif ruutu == "A3" or ruutu == "a3" or ruutu == "3A" or ruutu == "3a":
             a2 = muunna(a2)
             a3 = muunna(a3)
             a4 = muunna(a4)
             b3 = muunna(b3)
 
-        elif ruutu == "A4" or ruutu == "a4":
+        elif ruutu == "A4" or ruutu == "a4" or ruutu == "4a" or ruutu == "4A":
             a3 = muunna(a3)
             a4 = muunna(a4)
             b4 = muunna(b4)
 
-        elif ruutu == "B1" or ruutu == "b1":
+        elif ruutu == "B1" or ruutu == "b1" or ruutu == "1B" or ruutu == "1b":
             a1 = muunna(a1)
             b1 = muunna(b1)
             b2 = muunna(b2)
             c1 = muunna(c1)
 
-        elif ruutu == "B2" or ruutu == "b2":
+        elif ruutu == "B2" or ruutu == "b2" or ruutu == "2b" or ruutu == "2B":
             a2 = muunna(a2)
             b1 = muunna(b1)
             b2 = muunna(b2)
             b3 = muunna(b3)
             c2 = muunna(c2)
 
-        elif ruutu == "B3" or ruutu == "b3":
+        elif ruutu == "B3" or ruutu == "b3" or ruutu == "3b" or ruutu == "3B":
             a3 = muunna(a3)
             b2 = muunna(b2)
             b3 = muunna(b3)
             b4 = muunna(b4)
             c3 = muunna(c3)
 
-        elif ruutu == "B4" or ruutu == "b4":
+        elif ruutu == "B4" or ruutu == "b4" or ruutu == "4b" or ruutu == "4B":
             a4 = muunna(a4)
             b3 = muunna(b3)
             b4 = muunna(b4)
             c4 = muunna(c4)
 
-        elif ruutu == "C1" or ruutu == "c1":
+        elif ruutu == "C1" or ruutu == "c1" or ruutu == "1c" or ruutu == "1C":
             b1 = muunna(b1)
             c1 = muunna(c1)
             c2 = muunna(c2)
             d1 = muunna(d1)
 
-        elif ruutu == "C2" or ruutu == "c2":
+        elif ruutu == "C2" or ruutu == "c2" or ruutu == "2c" or ruutu == "2C":
             b2 = muunna(b2)
             c1 = muunna(c1)
             c2 = muunna(c2)
             c3 = muunna(c3)
             d2 = muunna(d2)
 
-        elif ruutu == "C3" or ruutu == "c3":
+        elif ruutu == "C3" or ruutu == "c3" or ruutu == "3C" or ruutu == "3c":
             b3 = muunna(b3)
             c2 = muunna(c2)
             c3 = muunna(c3)
             c4 = muunna(c4)
             d3 = muunna(d3)
 
-        elif ruutu == "C4" or ruutu == "c4":
+        elif ruutu == "C4" or ruutu == "c4" or ruutu == "4c" or ruutu == "4C":
             b4 = muunna(b4)
             c3 = muunna(c3)
             c4 = muunna(c4)
             d4 = muunna(d4)
 
-        elif ruutu == "D1" or ruutu == "d1":
+        elif ruutu == "D1" or ruutu == "d1" or ruutu == "1d" or ruutu == "1D":
             c1 = muunna(c1)
             d1 = muunna(d1)
             d2 = muunna(d2)
 
-        elif ruutu == "D2" or ruutu == "d2":
+        elif ruutu == "D2" or ruutu == "d2" or ruutu == "2d" or ruutu == "2D":
             c2 = muunna(c2)
             d1 = muunna(d1)
             d2 = muunna(d2)
             d3 = muunna(d3)
 
-        elif ruutu == "D3" or ruutu == "d3":
+        elif ruutu == "D3" or ruutu == "d3" or ruutu == "3d" or ruutu == "3D":
             c3 = muunna(c3)
             d2 = muunna(d2)
             d3 = muunna(d3)
             d4 = muunna(d4)
 
-        elif ruutu == "D4" or ruutu == "d4":
+        elif ruutu == "D4" or ruutu == "d4" or ruutu == "4d" or ruutu == "4D":
             c4 = muunna(c4)
             d3 = muunna(d3)
             d4 = muunna(d4)
-
+        elif ruutu == "help" or ruutu == "h":
+            print("-To reset the puzzle:\n[reset]\n-To exit the puzzle:\n[exit]/[stop]")
         elif ruutu == "reset":
             a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
         elif ruutu == "exit" or ruutu=="stop":
@@ -146,14 +148,12 @@ def puzzle():
 def move(command):
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
     haku = ("SELECT RoomTO FROM Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
     cur.execute(haku)
     destination = cur.fetchall()
     if cur.rowcount == 1:
         cur.execute("Select isLocked From Connect where RoomFrom = " + str(playerpos[0][0]) + " and direction='" + str(command) + "'")
         locked = cur.fetchall()
-        print(str(locked[0][0]))
         if int(playerpos[0][0]) == 122 and int(destination[0][0])== 121 and int(locked[0][0])== 1:
             if puzzle() == True:
                 cur.execute("UPDATE Connect set isLocked = 0 where RoomFrom = 122 and RoomTo = 121")
@@ -164,9 +164,11 @@ def move(command):
             cur.execute(liikkuu)
             cur.execute("SELECT positionID FROM Player;")
             playerpos = cur.fetchall()
-            print(str(playerpos[0][0]))
             cur.execute("select RoomDescr from Room where positionID =" + str(playerpos[0][0]))
             kuvaus = cur.fetchall()
+            cur.execute("Select RoomN from Room where positionID = " + str(playerpos[0][0]))
+            loc = cur.fetchall()
+            print("You are now in the " + str(loc[0][0]))
             print(str(kuvaus[0][0]))
             cur.execute("select ItemN from Item where itemPosition = " + str(playerpos[0][0]))
             tavarat = cur.fetchall()
@@ -205,39 +207,51 @@ def inventory():
     else:
         print("You have no items in your inventory")
 def attack(magicDrink):
+    #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    print(str(playerpos[0][0]))
-    if playerpos[0][0] == 113:
-        tool=input("What do you want to use to attack?: ")
-        haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
-        cur.execute(haku)
-        tulos = cur.fetchall()
-        print(str(tulos))
-        if len(tulos)>0:
-            if str(tulos[0][0]) != "None":
-                if tool == "sword":
-                    if magicDrink == False:
-                        print("You killed the rat")
-                        return True
-                    else:
-                        print("You are not carrying a sword anymore and cannot use it")
-                        print("The rat was fast and killed you")
-                        return False
-                elif tool == "needle":
-                    print("You killed the rat")
-                    return True
-                elif tool == "knife":
-                    print("The rat is stronger than you and it killed you")
-                    return False
-                else:
-                    print("You cannot use that to attack")
+    cur.execute("select itemposition from item where itemn='cheese'")
+    cheese = cur.fetchall()
+    if str(cheese[0][0]) != 'None':
+        if int(playerpos[0][0]) == 113 and int(cheese[0][0]) == 113 and int(npcstate[0][0])==1:
+            tool=input("What do you want to use to attack?: ")
+            if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
+                print("The rat was stronger than you and you died.")
+                return 'playerdead'
+            elif tool == 'sword' and magicDrink == True:
+                print("You cannot carry a sword because the magic drink made you so small.")
+                print("The rat was fast and killed you.")
+                return 'playerdead'
             else:
-                print("You don't have that item")
-                return False
+                haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
+                cur.execute(haku)
+                tulos = cur.fetchall()
+                print(str(tulos))
+                if len(tulos)>0:
+                    if str(tulos[0][0]) != "None":
+                        if tool == "sword" and magicDrink == False:
+                            print("You killed the rat")
+                            return 'ratdead'
+                        elif tool == "needle":
+                            print("You killed the rat")
+                            return 'ratdead'
+                        elif tool == "knife":
+                            print("The rat is stronger than you and it killed you")
+                            return 'playerdead'
+                        else:
+                            print("You cannot use that to attack. Please try again.")
+                            return 'bothalive'
+                    else:
+                        print("You don't have that item. Please try again.")
+                        return 'bothalive'
+                else:
+                    print("You don't have that item. Please try again.")
+                    return 'bothalive'
+        else:
+            print("There seems to be nobody to attack.")
+            return 'bothalive'
     else:
-        print("There's nobody to attack.")
-        return False
+        print("There seems to be nobody to attack")
 
 def examine(thing):
     cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
@@ -329,9 +343,15 @@ def drop(item):
         position = result[0][0]
         cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN LIKE '"+str(item)+"'")
         print("You dropped the "+str(item)+" on the ground.")
+        if item == "cheese":
+            cur.execute("SELECT positionID FROM player")
+            result = cur.fetchall()
+            if result[0][0] == 113:
+                print("A rat comes out of it's hole to eat the cheese. It appears to have a key tied to it's tail!")
+    else:
+        print("You don't have that with you")
 
-def talking(animalDrink):
-    #Palauttaa true/false riippuen kuoliko rotta
+def talking(animalDrink, magicDrink):
     val=val2=val3=val4=val5=val6=0
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
@@ -340,7 +360,7 @@ def talking(animalDrink):
     cur.execute("select itemposition from item where itemn='cheese'")
     cheese = cur.fetchall()
     if str(cheese[0][0]) != 'None':
-        if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and animalDrink == True:
+        if int(playerpos[0][0]) == 113 and int(cheese[0][0]) == 113 and int(npcstate[0][0])==1 and animalDrink == True:
             print("Hello, sir! I've been living in this castle for decades. I have been observing your and your family's life.")
             while val != '1' or val != '2' or val != '3' or val != 'exit':
                 val= input("Please choose one of the following: \n1. Why can I understand you?\n2. Can you help me get out of here?\n3. [attack the rat]\n")
@@ -353,18 +373,15 @@ def talking(animalDrink):
                             while val3 != '1' or val3 != '2' or val3 != 'exit':
                                 val3 = input("1. [attack]\n2. Can you help me get out of here?\n")
                                 if val3 == '1':
-                                    kill = attack(potionDrink)
-                                    if kill == True:
-                                        print("The rat dropped a key")
-                                        return True
-                                    else:
-                                        return False
+                                    kill = attack(magicDrink)
+                                    return kill
                                 if val3 == '2':
                                     print("Yes, I think I can help you but first I have something special for you. Would you like to take this magic drink from me?")
                                     while val5 != '1' or val5 != '2' or val5 != 'exit':
                                         val5 = input("1. Yes, I will take the drink\n2. No, thank you. Just help me get out of here.\n")
                                         if val5 == '1':
                                             print("Great! Here, take a magic drink I have for you.")
+                                            magicDrink = True
                                             print("You drank the magic drink and the drink made you the size of an ant")
                                             print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                                             print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
@@ -372,28 +389,26 @@ def talking(animalDrink):
                                             needle = cur.fetchall()
                                             if str(needle[0][0]) != 'None':
                                                 print("However you are still holding a needle. Maybe you could use it to attack?")
+                                                kill = attack(magicDrink)
+                                                return kill
                                             else:
-                                                kill = attack(potionDrink)
-                                                if kill == True:
-                                                    print("The rat dropped a key")
-                                                    return True
-                                                else:
-                                                    return False
+                                                kill = attack(magicDrink)
+                                                return kill
                                         elif val5 == '2':
                                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
-                                            print("The rat dropped a key")
                                             cur.execute("update item set itemposition = 113 where itemn='key'")
                                             cur.execute("update item set npcid = null where itemn='key'")
-                                            return False
+                                            print("The rat dropped a key")
+                                            return 'bothalive'
                                         elif val5 == 'exit':
                                             print("You ended the conversation with the rat.")
-                                            return False
+                                            return 'bothalive'
                                         else:
                                             print("That is not an option. Please try again.")
                                             
                                 if val3 == 'exit':
                                     print("You ended the conversation with the rat.")
-                                    return False
+                                    return 'bothalive'
                                 else:
                                     print("That is not an option. Please try again.")
                         elif val2 == '2':
@@ -402,6 +417,7 @@ def talking(animalDrink):
                                 val4 = input("1. Yes, I will take the drink\n2. No, thank you. Just help me get out of here.\n")
                                 if val4 == '1':
                                     print("Great! Here, take a magic drink I have for you.")
+                                    magicDrink = True
                                     print("You drank the magic drink and the drink made you the size of an ant")
                                     print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                                     print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
@@ -409,31 +425,29 @@ def talking(animalDrink):
                                     needle = cur.fetchall()
                                     if str(needle[0][0]) != 'None':
                                         print("However you are still holding a needle. Maybe you could use it to attack?")
+                                        kill = attack(magicDrink)
+                                        return kill
                                     else:
-                                        kill = attack(potionDrink)
-                                        if kill == True:
-                                            print("The rat dropped a key")
-                                            return True
-                                        else:
-                                            return False
+                                        kill = attack(magicDrink)
+                                        return kill
                                 elif val4 == '2':
                                     print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
-                                    print("The rat dropped a key")
                                     cur.execute("update item set itemposition = 113 where itemn='key'")
                                     cur.execute("update item set npcid = null where itemn='key'")
-                                    return False
+                                    print("The rat dropped a key")
+                                    return 'bothalive'
                                 elif val4 == 'exit':
                                     print("You ended the conversation with the rat.")
-                                    return False
+                                    return 'bothalive'
                                 else:
                                     print("That is not an option. Please try again.")
                         elif val2 == '3':
                             print("Well, I think that maybe the maker of the potion thought it would be fun to be able to talk to animals.")
                             print("Come back to me if you other questions")
-                            return False
+                            return 'bothalive'
                         elif val2 == 'exit':
                             print("You ended the conversation with the rat.")
-                            return False
+                            return 'bothalive'
                         else:
                             print("That is not an option. Please try again.")
 
@@ -443,6 +457,7 @@ def talking(animalDrink):
                         val6 = input("1. Yes, I will take the drink\n2. No, thank you. Just help me get out of here.\n")
                         if val6 == '1':
                             print("Great! Here, take a magic drink I have for you.")
+                            magicDrink = True
                             print("You drank the magic drink and the drink made you the size of an ant")
                             print("'I have observed your family's life and created a plan to take over the castle.' said the rat")
                             print("The rat is now attacking you, due to being so small you are not carrying most of your items anymore.")
@@ -450,42 +465,36 @@ def talking(animalDrink):
                             needle = cur.fetchall()
                             if str(needle[0][0]) != 'None':
                                 print("However you are still holding a needle. Maybe you could use it to attack?")
+                                kill = attack(magicDrink)
+                                return kill
                             else:
-                                kill = attack(potionDrink)
-                                if kill == True:
-                                    print("The rat dropped a key")
-                                    return True
-                                else:
-                                    return False
+                                kill = attack(magicrink)
+                                return kill
                         elif val6 == '2':
                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
-                            print("The rat dropped a key")
                             cur.execute("update item set itemposition = 113 where itemn='key'")
                             cur.execute("update item set npcid = null where itemn='key'")
-                            return False
+                            print("The rat dropped a key")
+                            return 'bothalive'
                         elif val6 == 'exit':
                             print("You ended the conversation with the rat.")
-                            return False
+                            return 'bothalive'
                         else:
                             print("That is not an option. Please try again.")
                 elif val == '3':
-                    kill = attack(potionDrink)
-                    if kill == True:
-                        print("The rat dropped a key")
-                        return True
-                    else:
-                        return False
+                    kill = attack(magicDrink)
+                    return kill
                 elif val == 'exit':
                     print("You ended the conversation with the rat.")
-                    return False
+                    return 'bothalive'
                 else:
                     print("That is not an option. Please try again.")
         else:
             print("There seems to be nobody to talk to.")
-            return False
+            return 'bothalive'
     else:
             print("There seems to be nobody to talk to.")
-            return False
+            return 'bothalive'
 
 #main game loop
 while (playerAlive == True):
@@ -497,7 +506,6 @@ while (playerAlive == True):
         command = command.replace(i, " ")
     
     wordCount = len(command.split())
-    print(str(wordCount))
 
     if wordCount == 1:
         #directions you can go to:
@@ -544,10 +552,24 @@ while (playerAlive == True):
             print("You drank the "+word2)
         
         elif word1 == "stab" or word1 == "attack":
-            attack()
+            resattack = attack(magicDrink)
+            if resattack == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+                cur.execute("update item set itemposition = 113 where itemn='key'")
+                cur.execute("update item set npcid = null where itemn='key'")
+                print("The rat dropped a key")
+            if resattack == 'playerdead':
+                playerAlive = False
 
         elif word1 == "talk":
-            print("You talked to "+word2)
+            restalk = talking(animalDrink, magicDrink)
+            if restalk == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+                cur.execute("update item set itemposition = 113 where itemn='key'")
+                cur.execute("update item set npcid = null where itemn='key'")
+                print("The rat dropped a key")
         
         else:
             print("That could not be done I'm afraid")
@@ -561,10 +583,17 @@ while (playerAlive == True):
             pickUp(word3)
 
         elif word1 == "talk" and word2 == "to":
-            print("You talked to "+word3)
+            restalk = talking(animalDrink, magicDrink)
+            if restalk == 'ratdead':
+                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                magicDrink = False
+                cur.execute("update item set itemposition = 113 where itemn='key'")
+                cur.execute("update item set npcid = null where itemn='key'")
+                print("The rat dropped a key")
+                
+            if restalk == 'playerdead':
+                playerAlive = False
 
         else:
             print("That could not be done I'm afraid")
-          
-        
-print("goodbye!")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+print("Game over!")

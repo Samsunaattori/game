@@ -210,43 +210,48 @@ def attack(magicDrink):
     #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
-    if playerpos[0][0] == 113:
-        tool=input("What do you want to use to attack?: ")
-        if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
-            print("The rat was stronger than you and you died.")
-            return 'playerdead'
-        elif tool == 'sword' and magicDrink == True:
-            print("You cannot carry a sword because the magic drink made you so small.")
-            print("The rat was fast and killed you.")
-            return 'playerdead'
-        else:
-            haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
-            cur.execute(haku)
-            tulos = cur.fetchall()
-            print(str(tulos))
-            if len(tulos)>0:
-                if str(tulos[0][0]) != "None":
-                    if tool == "sword" and magicDrink == False:
-                        print("You killed the rat")
-                        return 'ratdead'
-                    elif tool == "needle":
-                        print("You killed the rat")
-                        return 'ratdead'
-                    elif tool == "knife":
-                        print("The rat is stronger than you and it killed you")
-                        return 'playerdead'
+    cur.execute("select itemposition from item where itemn='cheese'")
+    cheese = cur.fetchall()
+    if str(cheese[0][0]) != 'None':
+        if int(playerpos[0][0]) == 113 and int(cheese[0][0]) == 113 and int(npcstate[0][0])==1:
+            tool=input("What do you want to use to attack?: ")
+            if tool == 'hands' or tool == 'fists' or tool == 'hand' or tool == 'fist':
+                print("The rat was stronger than you and you died.")
+                return 'playerdead'
+            elif tool == 'sword' and magicDrink == True:
+                print("You cannot carry a sword because the magic drink made you so small.")
+                print("The rat was fast and killed you.")
+                return 'playerdead'
+            else:
+                haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
+                cur.execute(haku)
+                tulos = cur.fetchall()
+                print(str(tulos))
+                if len(tulos)>0:
+                    if str(tulos[0][0]) != "None":
+                        if tool == "sword" and magicDrink == False:
+                            print("You killed the rat")
+                            return 'ratdead'
+                        elif tool == "needle":
+                            print("You killed the rat")
+                            return 'ratdead'
+                        elif tool == "knife":
+                            print("The rat is stronger than you and it killed you")
+                            return 'playerdead'
+                        else:
+                            print("You cannot use that to attack. Please try again.")
+                            return 'bothalive'
                     else:
-                        print("You cannot use that to attack. Please try again.")
+                        print("You don't have that item. Please try again.")
                         return 'bothalive'
                 else:
                     print("You don't have that item. Please try again.")
                     return 'bothalive'
-            else:
-                print("You don't have that item. Please try again.")
-                return 'bothalive'
+        else:
+            print("There seems to be nobody to attack.")
+            return 'bothalive'
     else:
-        print("There seems to be nobody to attack.")
-        return 'bothalive'
+        print("There seems to be nobody to attack")
 
 def examine(thing):
     cur.execute("SELECT ItemDescr FROM item WHERE ItemN LIKE '"+thing+"' AND PlayerID=1")
@@ -355,7 +360,7 @@ def talking(animalDrink, magicDrink):
     cur.execute("select itemposition from item where itemn='cheese'")
     cheese = cur.fetchall()
     if str(cheese[0][0]) != 'None':
-        if int(playerpos[0][0]) == 113 and int(npcstate[0][0])==1 and animalDrink == True:
+        if int(playerpos[0][0]) == 113 and int(cheese[0][0]) == 113 and int(npcstate[0][0])==1 and animalDrink == True:
             print("Hello, sir! I've been living in this castle for decades. I have been observing your and your family's life.")
             while val != '1' or val != '2' or val != '3' or val != 'exit':
                 val= input("Please choose one of the following: \n1. Why can I understand you?\n2. Can you help me get out of here?\n3. [attack the rat]\n")
