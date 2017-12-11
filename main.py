@@ -520,6 +520,7 @@ doing whatever he wants. 'With everyone gone, maybe I could finally get out of t
 world really looks like!' And so he becan his quest of wcaping the castle.")
 examine("room")
 
+wonGame = False
 #main game loop
 while (playerAlive == True):
     print("")
@@ -642,4 +643,9 @@ while (playerAlive == True):
 
         else:
             print("That could not be done I'm afraid")
-print("Game over!")
+
+if wonGame == True:
+    print("You escaped the castle!")
+else:
+    print("Game over!")
+
