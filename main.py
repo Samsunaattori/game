@@ -294,10 +294,7 @@ def examine(thing):
             result = cur.fetchall()
             for row in result:
                 position = row[0]
-            print("toimii")
             cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
-            print("toimii2")
-
         elif len(result2) > 0:
             cur.execute("SELECT ItemN from item WHERE ItemID = 4 AND PlayerID = 1")
             result = cur.fetchall()
