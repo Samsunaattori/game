@@ -213,6 +213,8 @@ def attack(magicDrink):
     #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
     playerpos = cur.fetchall()
+    cur.execute("Select isAlive From npc")
+    npcstate = cur.fetchall()
     cur.execute("select itemposition from item where itemn='cheese'")
     cheese = cur.fetchall()
     if str(cheese[0][0]) != 'None':
