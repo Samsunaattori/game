@@ -275,8 +275,7 @@ def examine(thing):
         for row in resultInRoom:
             print(row[0])
     elif len(resultContainer) > 0:
-        for row in resultContainer:
-            print(row[0])
+        
         cur.execute("SELECT ItemN FROM item WHERE ContainerID IN (SELECT ContainerID FROM container \
     INNER JOIN player ON container.ContainerPosition = player.PositionID WHERE container.containerID = 3)")
         result = cur.fetchall()
@@ -314,11 +313,10 @@ def examine(thing):
                 result = cur.fetchall()
                 for row in result:
                     position = row[0]
-                print("toimii")
                 cur.execute("UPDATE item SET ItemPosition = "+str(position)+" WHERE ItemN='"+str(item)+"'")
-                print("toimii2")
+                
         else:
-            print("I as a coder have no idea how you got here...")
+            print("There is nothing in the "+str(thing))
 
     elif thing == "room":
         cur.execute("SELECT positionID FROM Player;")
