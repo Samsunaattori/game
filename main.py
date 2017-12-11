@@ -230,7 +230,6 @@ def attack(magicDrink):
                 haku = ("Select PlayerID From Item where ItemN = '" + str(tool) + "'")
                 cur.execute(haku)
                 tulos = cur.fetchall()
-                print(str(tulos))
                 if len(tulos)>0:
                     if str(tulos[0][0]) != "None":
                         if tool == "sword" and magicDrink == False:
@@ -499,9 +498,7 @@ def openGate():
     cur.execute("SELECT PositionID FROM player WHERE PositionID = 121")
     result = cur.fetchall()
     if len(result) > 0:
-        print("toimii1")
         cur.execute("SELECT ItemN FROM item WHERE PlayerID = 1 AND ItemN = 'key'")
-        print("toimii2")
         result = cur.fetchall()
         if len(result) > 0:
             return 'won'
@@ -517,7 +514,7 @@ up from his bed, but nobody answers. An hour later, bored to death, he finally r
 ready to find something to do. \n Two hours later, still nothing. Not a soul seems to realize he is here. \
 Then he finally realized, that if there is no-one to help him, there propably is no-one to stop him from \
 doing whatever he wants. 'With everyone gone, maybe I could finally get out of the castle and see what the \
-world really looks like!' And so he becan his quest of wcaping the castle.")
+world really looks like!' And so he becan his quest of escaping the castle.")
 examine("room")
 
 wonGame = False
