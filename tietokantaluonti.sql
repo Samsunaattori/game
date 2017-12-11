@@ -96,7 +96,7 @@ INSERT INTO Container VALUES (1, "shelf", "A closed shelf that Tim now reached t
 INSERT INTO Container VALUES (2, "crack", "A small crack which Tim now rached thanks to the stool.", 231); 
 INSERT INTO Container VALUES (3, "haystack", "It is just a normal haystack, why would you examine it any further? Like there was something interesting in it.", 111); 
 
-INSERT INTO Item VALUES (1, null, null, 212, null, "book", "There is a thick and old looking book, which appears to be written by a man named Stephenson. The back of the book has something written on it: 'To open the door, change everyone, and the surround the ones with nothing.'"); 
+INSERT INTO Item VALUES (1, null, null, 212, null, "book", "There is a thick and old looking book, which appears to be written by a man named Stephenson. The back of the book has something written on it: 'To open the door, change everyone, and then surround the ones with nothing.'"); 
 INSERT INTO Item VALUES (2, null, null, 213, null, "sword", "A small silver colored sword. It's really sharp, so be careful not to stab yourself!"); 
 INSERT INTO Item VALUES (3, null, 2, null, null, "potion", "A magic potion.");
 INSERT INTO Item VALUES (4, null, null, 111, null, "stool", "A small wooden stool."); 
