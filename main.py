@@ -21,6 +21,8 @@ commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west
 def muunna(i):
     return (i+1)%2
 def puzzle():
+    print("You tried to move west, but there is some kind of a puzzle blocking your path. ([exit] to exit puzzle, [reset] to reset it)")
+
     a1=a2=a3=a4=b1=b2=b3=b4=c1=c2=c3=c4=d1=d2=d3=d4=0
     while not (a1==a2==a3==a4==b1==b4==c1==c4==d1==d2==d3==d4==0 and b2==b3==c2==c3==1):
         print("  "+str(1)+" "+str(2)+" "+str(3)+" "+str(4))
