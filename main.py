@@ -1,4 +1,3 @@
-#PELISTÄ PUUTTUU VIELÄ DRINK ALIOHJELMA
 import mysql.connector
 db = mysql.connector.connect(host="localhost", user="dbuser",
                              passwd="dbpass", db="omapeli", buffered=True)
@@ -577,7 +576,17 @@ while (playerAlive == True):
             drop(word2)
 
         elif word1 == "drink":
-            print("You drank the "+word2)
+            x = input("What would you like to drink?")
+            if x == "potion" or x == "magic potion" or x == "drink" or x == "magic drink":
+                cur.execute("Select playerID from item where itemn = 'potion'")
+                res=cur.fetchall()
+                if str(res[0][0]) != "None":
+                    animalDrink = True
+                    print("You drank the magic potion and can now talk to animals.")
+                else:
+                    print("You don't have anything to drink")
+            else:
+                print("You cannot drink that.")
 
         elif word1 == "open" and word2 == "gate":
             isOpened = openGate()
