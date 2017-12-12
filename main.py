@@ -31,6 +31,7 @@ def puzzle():
         print("D "+str(d1)+" "+str(d2)+" "+str(d3)+" "+str(d4))
 
         ruutu = input("Give a command: ")
+        print("")
 
         if ruutu == "A1" or ruutu == "a1" or ruutu == "1A" or ruutu == "1a":
             a1 = muunna(a1)
