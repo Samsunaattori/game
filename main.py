@@ -467,7 +467,7 @@ def talking(animalDrink, magicDrink):
                                 kill = attack(magicDrink)
                                 return kill
                             else:
-                                kill = attack(magicrink)
+                                kill = attack(magicDrink)
                                 return kill
                         elif val6 == '2':
                             print("As you please. I think that the key I have on my tail will help you get out. Here you can have it.")
