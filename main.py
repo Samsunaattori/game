@@ -11,7 +11,7 @@ commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west
             "-Top open a gate:","[open gate]",
             "-To exit game:","[exit]","-To examine an item or a container:",
             "[examine (object)]","-To examine the room you are in:",
-            "[examine room]","-To pick up/take an item:",
+            "[examine room]/[look]","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
