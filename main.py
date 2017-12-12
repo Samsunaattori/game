@@ -191,7 +191,6 @@ def pickUp(object):
     player.PositionID WHERE ItemPosition IN (SELECT PositionID FROM player))")
         result = cur.fetchall()
         if len(result) == 1:
-            print(str(object))
             cur.execute("UPDATE item SET ItemPosition=null WHERE ItemN='"+str(object)+"'")
             cur.execute("UPDATE item SET PlayerID=1 WHERE ItemN='"+str(object)+"'")
             print("You picked up the "+str(object))
@@ -209,6 +208,7 @@ def inventory():
             print(row[0])
     else:
         print("You have no items in your inventory")
+        
 def attack(magicDrink):
     #palauttaa stringin, joka kertoo kuoliko joku
     cur.execute("SELECT positionID FROM Player;")
@@ -548,6 +548,9 @@ while (playerAlive == True):
 
         elif command == "inventory" or command == "i":
             inventory()
+
+        elif command == "look":
+            examine("room")
             
         elif command == "help" or command == "h":
             for word in commands:
