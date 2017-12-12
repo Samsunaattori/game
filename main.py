@@ -11,7 +11,7 @@ commands = ["-Possible directions to walk to:","[north]/[n]","[east]/[e]","[west
             "-Top open a gate:","[open gate]",
             "-To exit game:","[exit]","-To examine an item or a container:",
             "[examine (object)]","-To examine the room you are in:",
-            "[examine room]/[look]","-To pick up/take an item:",
+            "[examine room]/[look]-","-To pick up/take an item:",
             "[pick (item)]/[pick up (item)]/[take (item)]","-To drop an item:",
             "[drop (item)]","-To drink something:","[drink (item)]",
             "-To attack/stab something:","[attack (target)]/[stab (target)]",
@@ -602,7 +602,7 @@ while (playerAlive == True):
         elif word1 == "stab" or word1 == "attack":
             resattack = attack(magicDrink)
             if resattack == 'ratdead':
-                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                cur.execute("Update npc set isAlive = 0 where npcN = 'rat'")
                 magicDrink = False
                 cur.execute("update item set itemposition = 113 where itemn='key'")
                 cur.execute("update item set npcid = null where itemn='key'")
@@ -613,7 +613,7 @@ while (playerAlive == True):
         elif word1 == "talk":
             restalk = talking(animalDrink, magicDrink)
             if restalk == 'ratdead':
-                cur.execute("Update npc set isAlive = 1 where npcN = 'rat'")
+                cur.execute("Update npc set isAlive = 0 where npcN = 'rat'")
                 magicDrink = False
                 cur.execute("update item set itemposition = 113 where itemn='key'")
                 cur.execute("update item set npcid = null where itemn='key'")
